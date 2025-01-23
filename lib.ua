@@ -4,6 +4,7 @@ R ~ "git: github.com/uiua-lang/rayua"
 Rgb        ↚ ⌅(⁅|∘)×255
 ToRayColor ↚ ⌅(⍜°⍉(⊂⊙255)|⍜°⍉↙₃) Rgb
 CImpl      ↚ ⍉⊟°ℂ
+BoxStrings ↚ ⌅(⍥∵₁□=1⊸type|∵°□)
 
 # Transformations
 ┌─╴Transform
@@ -23,42 +24,74 @@ T ← Transform
   # ? Color
   Background ← R~ClearBackground ToRayColor
   
-  Circle ← ∵₁(R~DrawCircle ⊙°¤) ⊙∵¤ ⤚⋅: ToRayColor
   # Draw a circle on the screen
   # ? Color Radius Center
-  Circle ← ∵◇R~DrawCircle ⍜⊙◌∩∵₁□ ⤚⋅: ⊓(ToRayColor|∘|T~Coords)
+  Circle ← ∵◇R~DrawCircle ⤚⋅: ⊓(∵₁□ToRayColor|∘|∵₁□T~Coords)
   
   # Print text to the screen
   # ? Color Size Position Text
-  Text ← R~DrawText ⤚⋅⤚⋅: ⊓(ToRayColor|∘|T~Coords|$"_")
+  Text ← ∵◇R~DrawText ⤚⋅⤚⋅: ⊓(∵₁□ToRayColor|∘|∵₁□T~Coords|∵⍚$"_"BoxStrings)
   
-  Rect ← ∵₁R~DrawRectangle ⤚⋅: ToRayColor
   # Draw a rectangle on the screen
   # ? Color Size Position
-  Rect ← ∵◇R~DrawRectangle ∩₃∵₁□ ⤚⋅: ⊓(ToRayColor|∩T~Coords)
+  Rect ← ∵◇R~DrawRectangle ⤚⋅: ⊓(∵₁□ToRayColor|∩(∵₁□T~Coords))
   
   # Draw a square on the screen
   # ? Color Size Position
-  Square ← Rect⊙∵(↯2) ⊓(∘|∘|T~Coords)
+  Square ← Rect ⊙∵(↯2)
 └─╴
 
 ┌─╴Key
-  # Boolean for if the key was pressed once
+  # Check if a key was pressed once
   # ? Key
   Pressed ← ∵◇R~IsKeyPressed
-  Down    ← ∵◇R~IsKeyDown
+  # Check if a key is down
+  # ? Key
+  Down ← ∵◇R~IsKeyDown
+  # Get an arrow key for a specific direction
+  # ^: Up, v: Down, <: Left, >: Right
+  # Key ? Character
+  Arrow ← get⊙(map "^v<>" R~Key![Up Down Left Right])
+  # Get a particular function key
+  # Key ? Number
+  F ← get⊙(map⍜¯⇡12 +290⇡12)
   
+  Impl ↚ ▽⊙Transform![Up Left Down Right]⨬(Down|Pressed)
   # Returns array of direction constants for WASD keys pressed
   # Takes a boolean to choose between keypress and keydown
   # Direction ? Pressed
-  WASD ← ▽⊙Transform![Up Left Down Right]⨬(Down|Pressed)⊙"wasd"
+  WASD ← Impl⊙"wasd"
+  # Returns array of direction constants for arrow keys pressed
+  # Takes a boolean to choose between keypress and keydown
+  # Direction ? Pressed
+  UDLR ← Impl⊙(Arrow "^v<>")
 └─╴
 
 ┌─╴Mouse
-  Pressed ← R~IsMouseButtonPressed
-  Down    ← R~IsMouseButtonDown
-  Pos     ← (°T~Coords ⌅(R~GetMousePosition|R~SetMousePosition))
-  Change  ← (⌅(R~GetMouseDelta|⍜Pos+°T~Coords))
+  # Check if a mouse button was pressed once
+  # ? Button
+  Pressed ← ∵R~IsMouseButtonPressed
+  # Check if a mouse button is down
+  # ? Button
+  Down ← ∵R~IsMouseButtonDown
+  # The current position of the mouse
+  Pos ← (°T~Coords R~GetMousePosition)
+  # How many pixels the mouse has moved since the last frame
+  Change ← (°T~Coords R~GetMouseDelta)
+  # Hide the mouse from the user
+  Hide ← ⌅(R~HideCursor|R~ShowCursor)
+  # Call a function on the mouse position when a button is pressed
+  # 
+  # The first function is the button to run the function on (or identity to take from the stack)
+  # The second function will be called with the mouse position as its first argument
+  # ? Button Function
+  Pressed‼ ← ⍥(^1 Pos)Pressed ^0
+  # Call a function on the mouse position when a button is down
+  # 
+  # The first function is the button to run the function on (or identity to take from the stack)
+  # The second function will be called with the mouse position as its first argument
+  # ? Button Function
+  Down‼ ← ⍥(^1 Pos)Down ^0
   
   Left    ← R~MouseButton~Left
   Right   ← R~MouseButton~Right
@@ -71,7 +104,7 @@ T ← Transform
 
 # Open a new window with title
 # ? WindowSize WindowTitle
-Open ← R~InitWindow °⊟ T~Coords
+Open ← R~InitWindow °⊟ T~Coords ⍥(↯2)≍[]⊸△
 
 # Set the target FPS for the window
 # Inverse will retrieve the current FPS
