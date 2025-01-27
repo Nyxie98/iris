@@ -125,23 +125,22 @@ T ← Transform
 └─╴
 
 ┌─╴Screen
-  # Set the screen to fullscreen
-  # Inverse will remove fullscreen
-  Full ← ⌅(⍥R~ToggleFullscreen R~IsWindowFullscreen|⍥R~ToggleFullscreen¬R~IsWindowFullscreen)
+  # Check if the screen is fullscreen
+  # Inverse will set the screen state
+  Full ← ⌅(R~IsWindowFullscreen|⍥R~ToggleFullscreen≠R~IsWindowFullscreen)
   
   # Get the size of the screen
   # Inverse will set the size
-  Size ← °T~Coords⊟ ⌅(R~GetRenderWidth R~GetRenderHeight|R~SetWindowSize °Full)
+  Size ← °T~Coords⊟ ⌅(R~GetRenderWidth R~GetRenderHeight|R~SetWindowSize °Full 1)
 └─╴
 
 # Open a new screen with title
 # ? Size Title
 Open ← R~InitWindow °⊟ ⍥(↯2)≍[]⊸△ T~Coords
 
-# Set the target FPS for the screen
-# Inverse will retrieve the current FPS
-# ? FPS
-FPS ← ⌅(R~SetTargetFPS|R~GetFPS)
+# Get the current FPS
+# Inverse will set the target FPS for the screen
+FPS ← ⌅(R~GetFPS|R~SetTargetFPS)
 
 # Number of seconds since the screen opened
 # Seconds ? 
