@@ -3,7 +3,6 @@ R ~ "git: github.com/uiua-lang/rayua"
 
 Rgb        ↚ ⌅(⁅|∘)×255
 ToRayColor ↚ ⌅(⍜°⍉(⊂⊙255)|⍜°⍉↙₃) Rgb
-CImpl      ↚ ⍉⊟°ℂ
 BoxStrings ↚ ⌅(⍥∵₁□=1⊸type|∵°□)
 
 # Transformations
@@ -13,24 +12,33 @@ BoxStrings ↚ ⌅(⍥∵₁□=1⊸type|∵°□)
   Left  ← ℂ¯1 0
   Right ← ¯Left
   
+  CImpl ↚ ⍉⊟°ℂ
   # Convert an array from complex coordinates to vector cooridinates
   # Coordinates ? Complex
   Coords ← ⌅(⍥CImpl=3⊸type|⍥°CImpl=0⊸type)
 └─╴
 T ← Transform
 
+# Draw different shapes onto the screen
 ┌─╴Draw
+  # Used as a fill to center some shape
+  Centered ← ∞
+  
   # Fill the whole screen with a color
   # ? Color
   Background ← R~ClearBackground ToRayColor
-  
+
   # Draw a circle on the screen
   # ? Color Radius Center
   Circle ← ∵◇R~DrawCircle ⤚⋅: ⊓(∵₁□ToRayColor|∘|∵₁□T~Coords)
   
   # Print text to the screen
+  # Fill with `Centered` to center the text
   # ? Color Size Position Text
-  Text ← ∵◇R~DrawText ⤚⋅⤚⋅: ⊓(∵₁□ToRayColor|∘|∵₁□T~Coords|∵⍚$"_"BoxStrings)
+  Text ← (
+    ⤚⋅⤚⋅: ⊓(∵₁□ToRayColor|∘|∵₁□T~Coords|∵⍚$"_"BoxStrings)
+    ⨬(∵◇R~DrawText|∵◇R~DrawTextCentered) ⍣(≍Centered°◌|0)
+  )
   
   # Draw a rectangle on the screen
   # ? Color Size Position
@@ -103,8 +111,8 @@ T ← Transform
 └─╴
 
 # Open a new window with title
-# ? WindowSize WindowTitle
-Open ← R~InitWindow °⊟ T~Coords ⍥(↯2)≍[]⊸△
+# ? Size Title
+Open ← R~InitWindow °⊟ ⍥(↯2)≍[]⊸△ T~Coords
 
 # Set the target FPS for the window
 # Inverse will retrieve the current FPS
@@ -114,6 +122,9 @@ FPS ← ⌅(R~SetTargetFPS|R~GetFPS)
 # Number of seconds since the window opened
 # Seconds ? 
 Time ← (R~GetTime)
+
+# Delta-time since last frame in seconds
+Dt ← (R~GetFrameTime)
 
 Loop! ← (
   ⍢(R~BeginDrawing
