@@ -132,15 +132,15 @@ T ← Transform
   # Get the size of the screen
   # Inverse will set the size
   Size ← °T~Coords⊟ ⌅(R~GetRenderWidth R~GetRenderHeight|R~SetWindowSize °Full 1)
+  
+  # Get the current FPS
+  # Inverse will set the target FPS for the screen
+  FPS ← ⌅(R~GetFPS|R~SetTargetFPS)
 └─╴
 
 # Open a new screen with title
 # ? Size Title
 Open ← R~InitWindow °⊟ ⍥(↯2)≍[]⊸△ T~Coords
-
-# Get the current FPS
-# Inverse will set the target FPS for the screen
-FPS ← ⌅(R~GetFPS|R~SetTargetFPS)
 
 # Number of seconds since the screen opened
 # Seconds ? 
