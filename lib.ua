@@ -27,7 +27,7 @@ T ← Transform
   # Fill the whole screen with a color
   # ? Color
   Background ← R~ClearBackground ToRayColor
-
+  
   # Draw a circle on the screen
   # ? Color Radius Center
   Circle ← ∵◇R~DrawCircle ⤚⋅: ⊓(∵₁□ToRayColor|∘|∵₁□T~Coords)
@@ -53,22 +53,27 @@ T ← Transform
   # Check if a key was pressed once
   # ? Key
   Pressed ← ∵◇R~IsKeyPressed
+  
   # Check if a key is down
   # ? Key
   Down ← ∵◇R~IsKeyDown
+  
   # Get an arrow key for a specific direction
   # ^: Up, v: Down, <: Left, >: Right
   # Key ? Character
   Arrow ← get⊙(map "^v<>" R~Key![Up Down Left Right])
+  
   # Get a particular function key
   # Key ? Number
   F ← get⊙(map⍜¯⇡12 +290⇡12)
   
   Impl ↚ ▽⊙Transform![Up Left Down Right]⨬(Down|Pressed)
+  
   # Returns array of direction constants for WASD keys pressed
   # Takes a boolean to choose between keypress and keydown
   # Direction ? Pressed
   WASD ← Impl⊙"wasd"
+  
   # Returns array of direction constants for arrow keys pressed
   # Takes a boolean to choose between keypress and keydown
   # Direction ? Pressed
@@ -79,27 +84,36 @@ T ← Transform
   # Check if a mouse button was pressed once
   # ? Button
   Pressed ← ∵R~IsMouseButtonPressed
+  
   # Check if a mouse button is down
   # ? Button
   Down ← ∵R~IsMouseButtonDown
+  
   # The current position of the mouse
   Pos ← (°T~Coords R~GetMousePosition)
+  
   # How many pixels the mouse has moved since the last frame
   Change ← (°T~Coords R~GetMouseDelta)
+  
   # Hide the mouse from the user
   Hide ← ⌅(R~HideCursor|R~ShowCursor)
+  
   # Call a function on the mouse position when a button is pressed
   # 
   # The first function is the button to run the function on (or identity to take from the stack)
   # The second function will be called with the mouse position as its first argument
   # ? Button Function
   Pressed‼ ← ⍥(^1 Pos)Pressed ^0
+  
   # Call a function on the mouse position when a button is down
   # 
   # The first function is the button to run the function on (or identity to take from the stack)
   # The second function will be called with the mouse position as its first argument
   # ? Button Function
   Down‼ ← ⍥(^1 Pos)Down ^0
+  
+  # Check if the mouse is on the screen
+  OnScreen ← (R~IsCursorOnScreen)
   
   Left    ← R~MouseButton~Left
   Right   ← R~MouseButton~Right
@@ -110,16 +124,26 @@ T ← Transform
   Back    ← R~MouseButton~Back
 └─╴
 
-# Open a new window with title
+┌─╴Screen
+  # Set the screen to fullscreen
+  # Inverse will remove fullscreen
+  Full ← ⌅(⍥R~ToggleFullscreen R~IsWindowFullscreen|⍥R~ToggleFullscreen¬R~IsWindowFullscreen)
+  
+  # Get the size of the screen
+  # Inverse will set the size
+  Size ← °T~Coords⊟ ⌅(R~GetRenderWidth R~GetRenderHeight|R~SetWindowSize °Full)
+└─╴
+
+# Open a new screen with title
 # ? Size Title
 Open ← R~InitWindow °⊟ ⍥(↯2)≍[]⊸△ T~Coords
 
-# Set the target FPS for the window
+# Set the target FPS for the screen
 # Inverse will retrieve the current FPS
 # ? FPS
 FPS ← ⌅(R~SetTargetFPS|R~GetFPS)
 
-# Number of seconds since the window opened
+# Number of seconds since the screen opened
 # Seconds ? 
 Time ← (R~GetTime)
 
