@@ -18,10 +18,16 @@ BoxStrings ↚ ⌅(⍥∵₁□=1⊸type|∵°□)
 └─╴
 T ← Transform
 
+┌─╴Collide
+  Rects ← /×/⊂> ⇌ ∩(⊟∵⊙∘) ⊙: ∩°⊟ ∩(\+°⍉₂T~Coords)
+└─╴
+
 # Draw different shapes onto the screen
 ┌─╴Draw
-  # Used as a fill to center some shape
-  Centered ← ∞
+  IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
+  
+  # A color with an opacity of zero
+  Clear ← [0 0 0 0]
   
   # Fill the whole screen with a color
   # ? Color
@@ -30,7 +36,10 @@ T ← Transform
   # Draw a line on the screen
   # Use a fill to set the thickness
   # ? Color A B
-  Line ← ⍣(∵◇R~DrawLineEx⊙⊙°◌|∵◇R~DrawLine) ⤚⋅⊙∘ ⊓(∵₁□ToRayColor|∩(∵₁□T~Coords))
+  Line ← (
+    ⊓(∵₁□ToRayColor|∩(∵₁□T~Coords))
+    ⍣(∵◇R~DrawLineEx⊙⊙(°0⊸type°◌)|∵◇R~DrawLine) ⤚⋅⊙∘
+  )
   
   # Draw a circle on the screen
   # ? Color Radius Center
@@ -45,12 +54,15 @@ T ← Transform
     ∵◇R~DrawCircleSector ⤚⋅⤙⊙⊙⊙⊙◌
   )
   
+  # Used as a fill to center text
+  Centered ← ∞
+  
   # Print text to the screen
   # Fill with `Centered` to center the text
   # ? Color Size Position Text
   Text ← (
-    ⤚⋅⤚⋅: ⊓(∵₁□ToRayColor|∘|∵₁□T~Coords|∵⍚$"_"BoxStrings)
-    ⨬(∵◇R~DrawText|∵◇R~DrawTextCentered) ⍣(≍Centered°◌|0)
+    ⊓(∵₁□ToRayColor|∘|∵₁□T~Coords|∵⍚$"_"BoxStrings)
+    ⨬(∵◇R~DrawText|∵◇R~DrawTextCentered) ⍣(≍Centered°◌|0) ⤚⋅⤚⋅:
   )
   
   # Draw a rectangle on the screen
@@ -60,7 +72,40 @@ T ← Transform
   # Draw a square on the screen
   # ? Color Size Position
   Square ← Rect ⊙∵(↯2)
+  
+  ┌─╴Texture
+    # Load a texture from a filepath
+    # Texture ? Path
+    Load ← (R~LoadTexture)
+    
+    # Unload a texture, freeing it's memory
+    Unload ← (R~UnloadTexture)
+    
+    # Get the dimensions of a texture
+    Size ← ℂ∵₁R~Texture!⊃Width Height
+    
+    FillColor ↚ (∵₁□ ToRayColor ⍣(⊸IsColor °◌|White))
+    
+    # Draw a loaded texture onto the screen
+    # Provide a fill to draw with a color
+    # ? Position Texture
+    Draw ← ∵◇R~DrawTexture : ⊓(∵₁□T~Coords|∵₁□|FillColor)
+    Call ← Draw
+    
+    # Draw a portion of a texture onto the screen
+    # 
+    # This function takes two rectangles. The first is the section of the texture to draw, and the second is where to draw it.
+    # The next parameters are to rotate the To rectangle at some Angle, centered around an Origin.
+    # Provide a fill to draw with a color
+    # ? From To Origin Angle Texture
+    Map ← (
+      ⊓(∩(∵₂(□♭)T~Coords)|∵₁□T~Coords|×360|∵₁□|FillColor)
+      ∵◇R~DrawTexturePro ⤙⊙⊙⊙⊙◌
+    )
+  └─╴
 └─╴
+
+Texture ← Draw~Texture
 
 ┌─╴Key
   # Check if a key was pressed once
@@ -70,14 +115,14 @@ T ← Transform
   # Check if a key is down
   # ? Key
   Down ← ∵◇R~IsKeyDown
-
+  
   # Call a function when a key is pressed
   # 
   # The first function is the key to run the function on (or identity to take from the stack)
   # The second function will be called when the key is pressed
   # ? Key Function
   Pressed‼ ← ⍥(^1)Pressed ^0
-
+  
   # Call a function when a key is down
   # 
   # The first function is the key to run the function on (or identity to take from the stack)
