@@ -28,9 +28,23 @@ T ← Transform
   # ? Color
   Background ← R~ClearBackground ToRayColor
   
+  # Draw a line on the screen
+  # Use a fill to set the thickness
+  # ? Color A B
+  Line ← ⍣(∵◇R~DrawLineEx⊙⊙°◌|∵◇R~DrawLine) ⤚⋅⊙∘ ⊓(∵₁□ToRayColor|∩(∵₁□T~Coords))
+  
   # Draw a circle on the screen
   # ? Color Radius Center
   Circle ← ∵◇R~DrawCircle ⤚⋅: ⊓(∵₁□ToRayColor|∘|∵₁□T~Coords)
+  
+  # Draw a sector of a circle on the screen
+  # The two angles (Start and Angle) are given in rotations 0-1
+  # 0 is the top of the screen
+  # ? Color Radius Start Angle Center 
+  Sector ← (
+    ⊓(∵₁□ToRayColor|∘|∩(-90×360) ⟜+ ⊙⟜(×32)|∵₁□T~Coords)
+    ∵◇R~DrawCircleSector ⤚⋅⤙⊙⊙⊙⊙◌
+  )
   
   # Print text to the screen
   # Fill with `Centered` to center the text
