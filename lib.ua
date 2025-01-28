@@ -1,8 +1,7 @@
 # Experimental!
 R ~ "git: github.com/uiua-lang/rayua"
 
-Rgb        ↚ ⌅(⁅|∘)×255
-ToRayColor ↚ ⌅(⍜°⍉(⊂⊙255)|⍜°⍉↙₃) Rgb
+ToRayColor ↚ ⌅(⍜°⍉⬚255↙₄⁅) ×255
 BoxStrings ↚ ⌅(⍥∵₁□=1⊸type|∵°□)
 
 # Transformations
