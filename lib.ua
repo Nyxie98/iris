@@ -70,6 +70,20 @@ T ← Transform
   # Check if a key is down
   # ? Key
   Down ← ∵◇R~IsKeyDown
+
+  # Call a function when a key is pressed
+  # 
+  # The first function is the key to run the function on (or identity to take from the stack)
+  # The second function will be called when the key is pressed
+  # ? Key Function
+  Pressed‼ ← ⍥(^1)Pressed ^0
+
+  # Call a function when a key is down
+  # 
+  # The first function is the key to run the function on (or identity to take from the stack)
+  # The second function will be called when the key is down
+  # ? Key Function
+  Down‼ ← ⍥(^1)Down ^0
   
   # Get an arrow key for a specific direction
   # ^: Up, v: Down, <: Left, >: Right
