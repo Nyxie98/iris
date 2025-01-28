@@ -13,7 +13,7 @@ I ~ "git: github.com/Marcos-cat/iris"
 
 This is a list of the core improvements over Rayua that drove me to write this.
 
-1. **Shorter names**. I want more code that words in my code. Rayua uses the
+1. **Shorter names**. I want more code than words in my code. Rayua uses the
    names of the C functions from Raylib, which are quite verbose.
 2. **Pervasive functions**. Iris adds logic so that drawing many shapes only
    takes one function call. The basic Rayua functions are direct wrappers of the
