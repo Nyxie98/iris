@@ -212,7 +212,6 @@ Texture ← Draw~Texture
 
 # Open a new screen with title
 # ? Size Title
-Open ← R~InitWindow °⊟ ⍥(↯2)≍[]⊸△ T~Coords
 
 # Number of seconds since the screen opened
 # Seconds ? 
