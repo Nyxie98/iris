@@ -19,7 +19,16 @@ BoxStrings ↚ ⌅(⍥∵₁□=1⊸type|∵°□)
 T ← Transform
 
 ┌─╴Collide
+  # Check if two rectangles collide
   Rects ← /×/⊂> ⇌ ∩(⊟∵⊙∘) ⊙: ∩°⊟ ∩(\+°⍉₂T~Coords)
+  
+  # Check if two circles collide
+  # ? Radius₁ Center₁ Radius₂ Center₂
+  Circles ← <⊓(+|⌵-∩°T~Coords)⊙:
+  
+  # Check if a rectangle and a circle collide
+  # ? Rect Radius Center
+  RectCircle ← > ⌵- ⊸(↥⊙↧) °⊟\+°⍉°T~Coords ⊙:
 └─╴
 
 # Draw different shapes onto the screen
