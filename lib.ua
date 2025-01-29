@@ -31,12 +31,20 @@ T ← Transform
   RectCircle ← > ⌵- ⊸(↥⊙↧) °⊟\+°⍉°T~Coords ⊙:
 └─╴
 
+┌─╴Color
+  # A color with an opacity of zero
+  Clear ← [0 0 0 0]
+  
+  # Convert an rgb color to a Uiua color
+  Rgb ← ÷255
+  
+  # Convert a hexadecimal string into a color
+  Hex ← Rgb +×16∩⍉⧈°⊟¤¤2 ⊗⊙HexDigits ⬚@f∵◇(↘=@#⊸⊢) BoxStrings ¯⌵
+└─╴
+
 # Draw different shapes onto the screen
 ┌─╴Draw
   IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
-  
-  # A color with an opacity of zero
-  Clear ← [0 0 0 0]
   
   # Fill the whole screen with a color
   # ? Color
