@@ -125,6 +125,9 @@ T ← Transform
 Texture ← Draw~Texture
 
 ┌─╴Key
+  (⍚˙$"_ ← ∘R~Key~_  # The keycode for the _ key\n"
+  )^!(Backspace|Tab|Enter|Delete|Home|End|Insert|PageUp|PageDown|Escape|Pause)
+
   # Check if a key was pressed once
   # ? Key
   Pressed ← ∵◇R~IsKeyPressed
@@ -146,6 +149,29 @@ Texture ← Draw~Texture
   # The second function will be called when the key is down
   # ? Key Function
   Down‼ ← ⍥(^1)Down ^0
+  
+  # Get the characters that the user has typed
+  # 
+  # This function returns a string of queued characters
+  # If the user has not typed since the function was called, the string will be empty
+  Typed ← (⍥(⊂:▽⊸≠@\0R~GetCharPressed)∞ "")
+  
+  # Get the key codes that the user has typed
+  # 
+  # This function returns an array of queued key codes
+  # If the user has not typed since the function was called, the array will be empty
+  TypedCodes ← (⍥(⊂:▽⊸≠0R~GetKeyPressed)∞ [])
+  
+  # Emulate a text input on a string
+  # 
+  # This function edits a string based on the user's keyboard inputs
+  # Typing alphanumerics will append to the string, as well as non-printing characters like newline, space, and tab
+  # The string will also respect backspace and the Delete key to clear the string
+  Input ← (
+    ⊸˜∊Delete TypedCodes ⊂:Typed
+    ⨬(⍥(⍜↻↘₂-₁⊸⊗@\0) ⧻⊚⊸=@\0 ⊂: ˜⊏"\0\n\t"▽⊸≠∞⬚∞˜⊗[Backspace Enter Tab]
+    | ⋅⋅"")
+  )
   
   # Get an arrow key for a specific direction
   # ^: Up, v: Down, <: Left, >: Right
@@ -170,6 +196,9 @@ Texture ← Draw~Texture
 └─╴
 
 ┌─╴Mouse
+  (⍚˙$"_ ← ∘R~MouseButton~_  # The code for the _ mouse button\n"
+  )^!(Left|Right|Middle|Side|Extra|Forward|Back)
+
   # Check if a mouse button was pressed once
   # ? Button
   Pressed ← ∵R~IsMouseButtonPressed
@@ -203,14 +232,6 @@ Texture ← Draw~Texture
   
   # Check if the mouse is on the screen
   OnScreen ← (R~IsCursorOnScreen)
-  
-  Left    ← R~MouseButton~Left
-  Right   ← R~MouseButton~Right
-  Middle  ← R~MouseButton~Middle
-  Side    ← R~MouseButton~Side
-  Extra   ← R~MouseButton~Extra
-  Forward ← R~MouseButton~Forward
-  Back    ← R~MouseButton~Back
 └─╴
 
 ┌─╴Screen
