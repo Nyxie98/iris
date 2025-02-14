@@ -71,16 +71,11 @@ T ← Transform
     ∵◇R~DrawCircleSector ⤚⋅⤙⊙⊙⊙⊙◌
   )
   
-  # Used as a fill to center text
-  Centered ← ∞
+  Text! ↚ ∵◇^0 ⤚⋅⤚⋅: ⊓(∵₁□ToRayColor|∘|∵₁□T~Coords|∵⍚$"_"BoxStrings)
   
   # Print text to the screen
-  # Fill with `Centered` to center the text
   # ? Color Size Position Text
-  Text ← (
-    ⊓(∵₁□ToRayColor|∘|∵₁□T~Coords|∵⍚$"_"BoxStrings)
-    ⨬(∵◇R~DrawText|∵◇R~DrawTextCentered) ⍣(≍Centered°◌|0) ⤚⋅⤚⋅:
-  )
+  Text ← Text!R~DrawText
   
   # Draw a rectangle on the screen
   # ? Color Size Position
@@ -89,6 +84,20 @@ T ← Transform
   # Draw a square on the screen
   # ? Color Size Position
   Square ← Rect ⊙∵(↯2)
+  
+  ┌─╴Centered
+    # Print horizontally centered text to the screen
+    # ? Color Size Position Text
+    Text ← Text!R~DrawTextCentered
+    
+    # Draw a centered rectangle on the screen
+    # ? Color Size Position
+    Rect ← Draw~Rect⊙⟜(-÷₂∩°T~Coords)
+    
+    # Draw a centered square on the screen
+    # ? Color Size Position
+    Square ← Rect ⊙(ℂ.)
+  └─╴
   
   ┌─╴Texture
     # Load a texture from a filepath
