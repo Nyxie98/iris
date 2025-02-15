@@ -1,5 +1,5 @@
 # Experimental!
-R ~ "git: github.com/uiua-lang/rayua"
+Rayua ~ "git: github.com/uiua-lang/rayua"
 
 ToRayColor ↚ ⌅(⍜°⍉⬚255↙₄⁅) ×255
 BoxStrings ↚ ⌅(⍥∵₁□=1⊸type|∵°□)
@@ -48,19 +48,19 @@ T ← Transform
   
   # Fill the whole screen with a color
   # ? Color
-  Background ← R~ClearBackground ToRayColor
+  Background ← Rayua~ClearBackground ToRayColor
   
   # Draw a line on the screen
   # Use a fill to set the thickness
   # ? Color A B
   Line ← (
     ⊓(∵₁□ToRayColor|∩(∵₁□T~Coords))
-    ⍣(∵◇R~DrawLineEx⊙⊙(°0⊸type°◌)|∵◇R~DrawLine) ⤚⋅⊙∘
+    ⍣(∵◇Rayua~DrawLineEx⊙⊙(°0⊸type°◌)|∵◇Rayua~DrawLine) ⤚⋅⊙∘
   )
   
   # Draw a circle on the screen
   # ? Color Radius Center
-  Circle ← ∵◇R~DrawCircle ⤚⋅: ⊓(∵₁□ToRayColor|∘|∵₁□T~Coords)
+  Circle ← ∵◇Rayua~DrawCircle ⤚⋅: ⊓(∵₁□ToRayColor|∘|∵₁□T~Coords)
   
   # Draw a sector of a circle on the screen
   # The two angles (Start and Angle) are given in rotations 0-1
@@ -68,18 +68,18 @@ T ← Transform
   # ? Color Radius Start Angle Center 
   Sector ← (
     ⊓(∵₁□ToRayColor|∘|∩(-90×360) ⟜+ ⊙⟜(×32)|∵₁□T~Coords)
-    ∵◇R~DrawCircleSector ⤚⋅⤙⊙⊙⊙⊙◌
+    ∵◇Rayua~DrawCircleSector ⤚⋅⤙⊙⊙⊙⊙◌
   )
   
   Text! ↚ ∵◇^0 ⤚⋅⤚⋅: ⊓(∵₁□ToRayColor|∘|∵₁□T~Coords|∵⍚$"_"BoxStrings)
   
   # Print text to the screen
   # ? Color Size Position Text
-  Text ← Text!R~DrawText
+  Text ← Text!Rayua~DrawText
   
   # Draw a rectangle on the screen
   # ? Color Size Position
-  Rect ← ∵◇R~DrawRectangle ⤚⋅: ⊓(∵₁□ToRayColor|∩(∵₁□T~Coords))
+  Rect ← ∵◇Rayua~DrawRectangle ⤚⋅: ⊓(∵₁□ToRayColor|∩(∵₁□T~Coords))
   
   # Draw a square on the screen
   # ? Color Size Position
@@ -88,7 +88,7 @@ T ← Transform
   ┌─╴Centered
     # Print horizontally centered text to the screen
     # ? Color Size Position Text
-    Text ← Text!R~DrawTextCentered
+    Text ← Text!Rayua~DrawTextCentered
     
     # Draw a centered rectangle on the screen
     # ? Color Size Position
@@ -102,20 +102,20 @@ T ← Transform
   ┌─╴Texture
     # Load a texture from a filepath
     # Texture ? Path
-    Load ← (R~LoadTexture)
+    Load ← (Rayua~LoadTexture)
     
     # Unload a texture, freeing it's memory
-    Unload ← (R~UnloadTexture)
+    Unload ← (Rayua~UnloadTexture)
     
     # Get the dimensions of a texture
-    Size ← ℂ∵₁R~Texture!⊃Width Height
+    Size ← ℂ∵₁Rayua~Texture!⊃Width Height
     
     FillColor ↚ (∵₁□ ToRayColor ⍣(⊸IsColor °◌|White))
     
     # Draw a loaded texture onto the screen
     # Provide a fill to draw with a color
     # ? Position Texture
-    Draw ← ∵◇R~DrawTexture : ⊓(∵₁□T~Coords|∵₁□|FillColor)
+    Draw ← ∵◇Rayua~DrawTexture : ⊓(∵₁□T~Coords|∵₁□|FillColor)
     Call ← Draw
     
     # Draw a portion of a texture onto the screen
@@ -126,7 +126,7 @@ T ← Transform
     # ? From To Origin Angle Texture
     Map ← (
       ⊓(∩(∵₂(□♭)T~Coords)|∵₁□T~Coords|×360|∵₁□|FillColor)
-      ∵◇R~DrawTexturePro ⤙⊙⊙⊙⊙◌
+      ∵◇Rayua~DrawTexturePro ⤙⊙⊙⊙⊙◌
     )
   └─╴
 └─╴
@@ -134,16 +134,16 @@ T ← Transform
 Texture ← Draw~Texture
 
 ┌─╴Key
-  (⍚˙$"_ ← ∘R~Key~_  # The keycode for the _ key\n"
+  (⍚˙$"_ ← ∘Rayua~Key~_  # The keycode for the _ key\n"
   )^!(Backspace|Tab|Enter|Delete|Home|End|Insert|PageUp|PageDown|Escape|Pause)
 
   # Check if a key was pressed once
   # ? Key
-  Pressed ← ∵◇R~IsKeyPressed
+  Pressed ← ∵◇Rayua~IsKeyPressed
   
   # Check if a key is down
   # ? Key
-  Down ← ∵◇R~IsKeyDown
+  Down ← ∵◇Rayua~IsKeyDown
   
   # Call a function when a key is pressed
   # 
@@ -163,13 +163,13 @@ Texture ← Draw~Texture
   # 
   # This function returns a string of queued characters
   # If the user has not typed since the function was called, the string will be empty
-  Typed ← (⍥(⊂:▽⊸≠@\0R~GetCharPressed)∞ "")
+  Typed ← (⍥(⊂:▽⊸≠@\0Rayua~GetCharPressed)∞ "")
   
   # Get the key codes that the user has typed
   # 
   # This function returns an array of queued key codes
   # If the user has not typed since the function was called, the array will be empty
-  TypedCodes ← (⍥(⊂:▽⊸≠0R~GetKeyPressed)∞ [])
+  TypedCodes ← (⍥(⊂:▽⊸≠0Rayua~GetKeyPressed)∞ [])
   
   # Emulate a text input on a string
   # 
@@ -185,7 +185,7 @@ Texture ← Draw~Texture
   # Get an arrow key for a specific direction
   # ^: Up, v: Down, <: Left, >: Right
   # Key ? Character
-  Arrow ← get⊙(map "^v<>" R~Key![Up Down Left Right])
+  Arrow ← get⊙(map "^v<>" Rayua~Key![Up Down Left Right])
   
   # Get a particular function key
   # Key ? Number
@@ -205,25 +205,25 @@ Texture ← Draw~Texture
 └─╴
 
 ┌─╴Mouse
-  (⍚˙$"_ ← ∘R~MouseButton~_  # The code for the _ mouse button\n"
+  (⍚˙$"_ ← ∘Rayua~MouseButton~_  # The code for the _ mouse button\n"
   )^!(Left|Right|Middle|Side|Extra|Forward|Back)
 
   # Check if a mouse button was pressed once
   # ? Button
-  Pressed ← ∵R~IsMouseButtonPressed
+  Pressed ← ∵Rayua~IsMouseButtonPressed
   
   # Check if a mouse button is down
   # ? Button
-  Down ← ∵R~IsMouseButtonDown
+  Down ← ∵Rayua~IsMouseButtonDown
   
   # The current position of the mouse
-  Pos ← (°T~Coords R~GetMousePosition)
+  Pos ← (°T~Coords Rayua~GetMousePosition)
   
   # How many pixels the mouse has moved since the last frame
-  Change ← (°T~Coords R~GetMouseDelta)
+  Change ← (°T~Coords Rayua~GetMouseDelta)
   
   # Hide the mouse from the user
-  Hide ← ⌅(R~HideCursor|R~ShowCursor)
+  Hide ← ⌅(Rayua~HideCursor|Rayua~ShowCursor)
   
   # Call a function on the mouse position when a button is pressed
   # 
@@ -240,39 +240,39 @@ Texture ← Draw~Texture
   Down‼ ← ⍥(^1 Pos)Down ^0
   
   # Check if the mouse is on the screen
-  OnScreen ← (R~IsCursorOnScreen)
+  OnScreen ← (Rayua~IsCursorOnScreen)
 └─╴
 
 ┌─╴Screen
   # Check if the screen is fullscreen
   # Inverse will set the screen state
-  Full ← ⌅(R~IsWindowFullscreen|⍥R~ToggleFullscreen≠R~IsWindowFullscreen)
+  Full ← ⌅(Rayua~IsWindowFullscreen|⍥Rayua~ToggleFullscreen≠Rayua~IsWindowFullscreen)
   
   # Get the size of the screen
   # Inverse will set the size
-  Size ← °T~Coords⊟ ⌅(R~GetRenderWidth R~GetRenderHeight|R~SetWindowSize °Full 1)
+  Size ← °T~Coords⊟ ⌅(Rayua~GetRenderWidth Rayua~GetRenderHeight|Rayua~SetWindowSize °Full 1)
   
   # Get the current FPS
   # Inverse will set the target FPS for the screen
-  FPS ← ⌅(R~GetFPS|R~SetTargetFPS)
+  FPS ← ⌅(Rayua~GetFPS|Rayua~SetTargetFPS)
 └─╴
 
 # Open a new screen with title
 # ? Size Title
-Open ← R~InitWindow ⊓(°⊟ ⍥(↯2)≍[]⊸△ T~Coords|$"_")
+Open ← Rayua~InitWindow ⊓(°⊟ ⍥(↯2)≍[]⊸△ T~Coords|$"_")
 
 # Number of seconds since the screen opened
 # Seconds ? 
-Time ← (R~GetTime)
+Time ← (Rayua~GetTime)
 
 # Delta-time since last frame in seconds
-Dt ← (R~GetFrameTime)
+Dt ← (Rayua~GetFrameTime)
 
 Loop! ← (
-  ⍢(R~BeginDrawing
+  ⍢(Rayua~BeginDrawing
     ^0
-    R~EndDrawing
-  | ¬ R~WindowShouldClose
+    Rayua~EndDrawing
+  | ¬ Rayua~WindowShouldClose
   )
-  R~CloseWindow
+  Rayua~CloseWindow
 )
