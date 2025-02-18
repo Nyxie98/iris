@@ -136,14 +136,17 @@ Texture ← Draw~Texture
 ┌─╴Key
   (⍚˙$"_ ← ∘Rayua~Key~_  # The keycode for the _ key\n"
   )^!(Backspace|Tab|Enter|Delete|Home|End|Insert|PageUp|PageDown|Escape|Pause)
-
+  Space ← @\s
+  
+  Fix ↚ ⍥⋅Tab⊸=@\t ⍥⋅Enter⊸=@\n
+  
   # Check if a key was pressed once
   # ? Key
-  Pressed ← ∵◇Rayua~IsKeyPressed
+  Pressed ← ∵◇(Rayua~IsKeyPressed Fix)
   
   # Check if a key is down
   # ? Key
-  Down ← ∵◇Rayua~IsKeyDown
+  Down ← ∵◇(Rayua~IsKeyDown Fix)
   
   # Call a function when a key is pressed
   # 
