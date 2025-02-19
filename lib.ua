@@ -97,6 +97,8 @@ T ← Transform
     # Draw a centered square on the screen
     # ? Color Size Position
     Square ← Rect ⊙(ℂ.)
+    
+    Circle ← Draw~Circle
   └─╴
   
   ┌─╴Texture
