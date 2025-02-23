@@ -32,6 +32,12 @@ This is a list of the core improvements over Rayua that drove me to write this.
    like `⁅`, `¬`, or `√` now work. It also means that you can use the
    [built-in color constants](https://www.uiua.org/docs/constants).
 
+[Function Docs](https://marcos-cat.github.io/iris/)
+
+## Games in Iris
+
+[Wordle](https://github.com/Marcos-cat/wordle-uiua)
+
 ## Basic example
 
 ```uiua
