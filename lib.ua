@@ -10,12 +10,12 @@ BoxStrings ↚ ⌅(⍥∵₁□=1⊸type|∵°□)
   Down  ← ¯Up
   Left  ← ℂ¯1 0
   Right ← ¯Left
-
+  
   CImpl ↚ ⍉⊟°ℂ
   # Convert an array from complex coordinates to vector cooridinates
   # Coordinates ? Complex
   Coords ← ⌅(⍥CImpl=3⊸type|⍥°CImpl=0⊸type)
-
+  
   Grid ← ˜ℂ⊢₂°⍉°⊡
 └─╴
 T ← Transform
@@ -23,11 +23,11 @@ T ← Transform
 ┌─╴Collide
   # Check if two rectangles collide
   Rects ← /×/⊂> ⇌ ∩(⊟∵⊙∘) ⊙: ∩°⊟ ∩(\+°⍉₂T~Coords)
-
+  
   # Check if two circles collide
   # ? Radius₁ Center₁ Radius₂ Center₂
   Circles ← <⊓(+|⌵-∩°T~Coords)⊙:
-
+  
   # Check if a rectangle and a circle collide
   # ? Rect Radius Center
   RectCircle ← > ⌵- ⊸(↥⊙↧) °⊟\+°⍉°T~Coords ⊙:
@@ -36,12 +36,13 @@ T ← Transform
 ┌─╴Color
   # A color with an opacity of zero
   Clear ← [0 0 0 0]
-
+  
   # Convert an rgb color to a Uiua color
   Rgb ← ÷255
-
+  
   # Convert a hexadecimal string into a color
-  Hex ← Rgb +×16∩⍉⧈°⊟¤¤2 ⊗⊙HexDigits ⬚@f∵◇(↘=@#⊸⊢) BoxStrings ¯⌵
+  # Color ? HexString
+  Hex ← Rgb +×16∩⍉ ⧈°⊟¤¤2 °⍉ ⊗⊙HexDigits ⬚@f∵◇(↘=@#⊸⊢) BoxStrings ¯⌵
 └─╴
 
 # Draw different shapes onto the screen
