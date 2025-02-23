@@ -22,11 +22,19 @@ T ← Transform
 
 ┌─╴Collide
   # Check if two rectangles collide
-  Rects ← /×/⊂> ⇌ ∩(⊟∵⊙∘) ⊙: ∩°⊟ ∩(\+°⍉₂T~Coords)
+  Rects ← /×/⊂> ⇌ ∩(⊟∵⊙∘) ⊙: ∩(°⊟\+°⍉₂T~Coords)
   
   # Check if two circles collide
   # ? Radius₁ Center₁ Radius₂ Center₂
   Circles ← <⊓(+|⌵-∩°T~Coords)⊙:
+  
+  # Check if a point is inside a circle
+  # ? Radius Center Point
+  CirclePoint ← ≤⊙(⌵-∩°T~Coords)
+  
+  # Check if a point is inside a rectangle
+  # ? Rect Point
+  RectPoint ← ×××∩°ℂ⊓⌟≥≤ °⊟\+°⍉ ∩°T~Coords
   
   # Check if a rectangle and a circle collide
   # ? Rect Radius Center
