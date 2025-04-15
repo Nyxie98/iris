@@ -266,7 +266,7 @@ Texture ← Draw~Texture
 
   # Get the size of the screen
   # Inverse will set the size
-  Size ← °T~Coords⊟ ⌅(Rayua~GetRenderWidth Rayua~GetRenderHeight|Rayua~SetWindowSize °Full 1)
+  Size ← °T~Coords ⌅(⊟Rayua~GetRenderWidth Rayua~GetRenderHeight|Rayua~SetWindowSize °⊟ ⍥(↯2)≍[]⊸△ °Full 1)
 
   # Get the size of the screen when it is fullscreen
   FullSize ← °T~Coords⊟ Rayua!⊃GetMonitorWidth GetMonitorHeight (Rayua~GetCurrentMonitor)
