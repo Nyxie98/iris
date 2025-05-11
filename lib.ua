@@ -22,7 +22,8 @@ T ← Transform
 
 ┌─╴Collide
   # Check if two rectangles collide
-  Rects ← /×/⊂> ⇌ ∩(⊟∵⊙∘) ⊙: ∩(°⊟\+°⍉₂T~Coords)
+  # ? Size₁ Position₁ Size₂ Position₂
+  Rects ← /×/⊂> ⇌ ˜∩(⊟∵⊙∘) ∩˜(⟜+∩°⍉∩T~Coords)
 
   # Check if two circles collide
   # ? Radius₁ Center₁ Radius₂ Center₂
