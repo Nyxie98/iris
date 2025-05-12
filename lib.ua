@@ -128,8 +128,8 @@ T ← Transform
 
     # Draw a loaded texture onto the screen
     # Provide a fill to draw with a color
-    # ? Position Texture
-    Draw ← ∵◇Rayua~DrawTexture : ⊓(∵₁□T~Coords|∵₁□|FillColor)
+    # ? Texture Position
+    Draw ← ∵◇Rayua~DrawTexture ⊓(∵₁□T~Coords|∵₁□|FillColor)
     Call ← Draw
 
     # Draw a portion of a texture onto the screen
@@ -137,10 +137,10 @@ T ← Transform
     # This function takes two rectangles. The first is the section of the texture to draw, and the second is where to draw it.
     # The next parameters are to rotate the To rectangle at some Angle, centered around an Origin.
     # Provide a fill to draw with a color
-    # ? From To Origin Angle Texture
+    # ? Texture From To Origin Angle
     Map ← (
-      ⊓(∩(∵₂(□♭)T~Coords)|∵₁□T~Coords|×360|∵₁□|FillColor)
-      ∵◇Rayua~DrawTexturePro ⤙⊙⊙⊙⊙◌
+      ⊓(∵₁□|∩(∵₂(□♭)T~Coords)|∵₁□T~Coords|×360|FillColor)
+      ∵◇Rayua~DrawTexturePro
     )
   └─╴
 └─╴
