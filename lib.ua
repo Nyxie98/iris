@@ -2,7 +2,7 @@
 Rayua ~ "git: github.com/uiua-lang/rayua"
 
 ToRayColor ↚ ⌅(⍜°⍉⬚255↙₄⁅) ×255
-BoxStrings ↚ ⌅(⍥∵₁□=1⊸type|∵°□)
+BoxStrings ↚ ⌅(⍥≡₁□=1⊸type|≡₀°□)
 
 # Transformations
 ┌─╴Transform
@@ -23,7 +23,7 @@ T ← Transform
 ┌─╴Collide
   # Check if two rectangles collide
   # ? Size₁ Position₁ Size₂ Position₂
-  Rects ← /×/⊂> ⇌ ˜∩(⊟∵⊙∘) ∩˜(⟜+∩°⍉∩T~Coords)
+  Rects ← /×/⊂> ⇌ ˜∩(⊟≡₀⊙∘) ∩˜(⟜+∩°⍉∩T~Coords)
 
   # Check if two circles collide
   # ? Radius₁ Center₁ Radius₂ Center₂
@@ -51,7 +51,7 @@ T ← Transform
 
   # Convert a hexadecimal string into a color
   # Color ? HexString
-  Hex ← Rgb +×16∩⍉ ⧈°⊟¤¤2 °⍉ ⊗⊙HexDigits ⬚@f∵◇(↘=@#⊸⊢) BoxStrings ¯⌵
+  Hex ← Rgb +×16∩⍉ ⧈°⊟¤¤2 °⍉ ⊗⊙HexDigits ⬚@f≡₀◇(↘=@#⊸⊢) BoxStrings ¯⌵
 └─╴
 
 # Draw different shapes onto the screen
@@ -66,24 +66,24 @@ T ← Transform
   # Use a fill to set the thickness
   # ? Color A B
   Line ← (
-    ⊓(∵₁□ToRayColor|∩(∵₁□T~Coords))
-    ⍣(∵◇Rayua~DrawLineEx⊙⊙(°0⊸type°◌)|∵◇Rayua~DrawLine) ⤚⋅⊙∘
+    ⊓(≡₁□ToRayColor|∩(≡₁□T~Coords))
+    ⍣(≡₀◇Rayua~DrawLineEx⊙⊙(°0⊸type°◌)|≡₀◇Rayua~DrawLine) ⤚⋅⊙∘
   )
 
   # Draw a circle on the screen
   # ? Color Radius Center
-  Circle ← ∵◇Rayua~DrawCircle ⤚⋅: ⊓(∵₁□ToRayColor|∘|∵₁□T~Coords)
+  Circle ← ≡₀◇Rayua~DrawCircle ⤚⋅: ⊓(≡₁□ToRayColor|∘|≡₁□T~Coords)
 
   # Draw a sector of a circle on the screen
   # The two angles (Start and Angle) are given in rotations 0-1
   # 0 is the top of the screen
   # ? Color Radius Start Angle Center 
   Sector ← (
-    ⊓(∵₁□ToRayColor|∘|∩(-90×360) ⟜+ ⊙⟜(×32)|∵₁□T~Coords)
-    ∵◇Rayua~DrawCircleSector ⤚⋅⤙⊙⊙⊙⊙◌
+    ⊓(≡₁□ToRayColor|∘|∩(-90×360) ⟜+ ⊙⟜(×32)|≡₁□T~Coords)
+    ≡₀◇Rayua~DrawCircleSector ⤚⋅⤙⊙⊙⊙⊙◌
   )
 
-  Text! ↚ ∵◇^0 ⤚⋅⤚⋅: ⊓(∵₁□ToRayColor|∘|∵₁□T~Coords|∵⍚$"_"BoxStrings)
+  Text! ↚ ≡₀◇^0 ⤚⋅⤚⋅: ⊓(≡₁□ToRayColor|∘|≡₁□T~Coords|≡₀⍚$"_"BoxStrings)
 
   # Print text to the screen
   # ? Color Size Position Text
@@ -91,11 +91,11 @@ T ← Transform
 
   # Draw a rectangle on the screen
   # ? Color Size Position
-  Rect ← ∵◇Rayua~DrawRectangle ⤚⋅: ⊓(∵₁□ToRayColor|∩(∵₁□T~Coords))
+  Rect ← ≡₀◇Rayua~DrawRectangle ⤚⋅: ⊓(≡₁□ToRayColor|∩(≡₁□T~Coords))
 
   # Draw a square on the screen
   # ? Color Size Position
-  Square ← Rect ⊙∵(↯2)
+  Square ← Rect ⊙≡₀(↯2)
 
   ┌─╴Centered
     # Print horizontally centered text to the screen
@@ -122,22 +122,22 @@ T ← Transform
     Unload ← (Rayua~UnloadTexture)
 
     # Get the dimensions of a texture
-    Size ← ℂ∵₁Rayua~Texture!⊃Width Height
+    Size ← ℂ≡₁Rayua~Texture!⊃Width Height
 
-    FillColor ↚ (∵₁□ ToRayColor ⍣(⊸IsColor °◌|White))
+    FillColor ↚ (≡₁□ ToRayColor ⍣(⊸IsColor °◌|White))
 
     # Draw a loaded texture onto the screen
     # Provide a fill to draw with a color
     # ? Texture Size Position
     Draw ← (
-      ⊓(∵₁⊃□(□⊂0_0 T~Coords Size)|˜∵⍚⊂ ∩(∵₁□T~Coords)) ⊙(⍥(↯2)≍[]⊸△)
-      ∵◇Rayua~DrawTexturePro⊙⊙⊙(□0_0 0 FillColor)
+      ⊓(≡₁⊃□(□⊂0_0 T~Coords Size)|˜≡₀⍚⊂ ∩(≡₁□T~Coords)) ⊙(⍥(↯2)≍[]⊸△)
+      ≡₀◇Rayua~DrawTexturePro⊙⊙⊙(□0_0 0 FillColor)
     )
     Call ← Draw
 
     # Like `Draw`, but the size is relative to the texture file
     # ? Texture Scale Position
-    DrawScaled ← Draw ⟜(∵°□ × ∵₁(□Size))
+    DrawScaled ← Draw ⟜(≡₀°□ × ≡₁(□Size))
 
     # Draw a portion of a texture onto the screen
     # 
@@ -146,8 +146,8 @@ T ← Transform
     # Provide a fill to draw with a color
     # ? Texture From To Origin Angle
     Map ← (
-      ⊓(∵₁□|∩(∵₂(□♭)T~Coords)|∵₁□T~Coords|×360|FillColor)
-      ∵◇Rayua~DrawTexturePro
+      ⊓(≡₁□|∩(≡₂(□♭)T~Coords)|≡₁□T~Coords|×360|FillColor)
+      ≡₀◇Rayua~DrawTexturePro
     )
   └─╴
 └─╴
@@ -163,11 +163,11 @@ Texture ← Draw~Texture
 
   # Check if a key was pressed once
   # ? Key
-  Pressed ← ∵◇(Rayua~IsKeyPressed Fix)
+  Pressed ← ≡₀◇(Rayua~IsKeyPressed Fix)
 
   # Check if a key is down
   # ? Key
-  Down ← ∵◇(Rayua~IsKeyDown Fix)
+  Down ← ≡₀◇(Rayua~IsKeyDown Fix)
 
   # Call a function when a key is pressed
   # 
@@ -234,11 +234,11 @@ Texture ← Draw~Texture
 
   # Check if a mouse button was pressed once
   # ? Button
-  Pressed ← ∵Rayua~IsMouseButtonPressed
+  Pressed ← ≡₀Rayua~IsMouseButtonPressed
 
   # Check if a mouse button is down
   # ? Button
-  Down ← ∵Rayua~IsMouseButtonDown
+  Down ← ≡₀Rayua~IsMouseButtonDown
 
   # The current position of the mouse
   Pos ← (°T~Coords Rayua~GetMousePosition)
