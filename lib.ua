@@ -128,9 +128,16 @@ T ← Transform
 
     # Draw a loaded texture onto the screen
     # Provide a fill to draw with a color
-    # ? Texture Position
-    Draw ← ∵◇Rayua~DrawTexture ⊓(∵₁□T~Coords|∵₁□|FillColor)
+    # ? Texture Size Position
+    Draw ← (
+      ⊓(∵₁⊃□(□⊂0_0 T~Coords Size)|˜∵⍚⊂ ∩(∵₁□T~Coords)) ⊙(⍥(↯2)≍[]⊸△)
+      ∵◇Rayua~DrawTexturePro⊙⊙⊙(□0_0 0 FillColor)
+    )
     Call ← Draw
+
+    # Like `Draw`, but the size is relative to the texture file
+    # ? Texture Scale Position
+    DrawScaled ← Draw ⟜(∵°□ × ∵₁(□Size))
 
     # Draw a portion of a texture onto the screen
     # 
