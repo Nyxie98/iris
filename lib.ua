@@ -57,10 +57,47 @@ T ← Transform
   Hex ← FillOpacity (⌅(≡₀^0|≡₁°^0))!⍜°□HexImpl BoxStrings ⌅(¯⌵)
 └─╴
 
+IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
+
+┌─╴Texture
+  # Load a texture from a filepath
+  # Texture ? Path
+  Load ← Rayua!⌅(LoadTexture|.LoadTexture|UnloadTexture)
+
+  # Unload a texture, freeing it's memory
+  Unload ← Rayua~UnloadTexture
+
+  # Get the dimensions of a texture
+  Size ← ℂ≡₁Rayua~Texture!⊃Width Height
+
+  FillColor ↚ (≡₁□ ToRayColor ⍣(⊸IsColor °◌|White))
+
+  # Draw a loaded texture onto the screen
+  # Provide a fill to draw with a color
+  # ? Texture Size Position
+  Draw ← (
+    ⊓(≡₁⊃□(□⊂0_0 T~Coords Size)|˜≡₀⍚⊂ ∩(≡₁□T~Coords)) ⊙(⍥(↯2)≍[]⊸△)
+    ≡₀◇Rayua~DrawTexturePro⊙⊙⊙(□0_0 0 FillColor)
+  )
+
+  # Like `Draw`, but the size is relative to the texture file
+  # ? Texture Scale Position
+  DrawScaled ← Draw ⟜(≡₀°□ × ≡₁(□Size))
+
+  # Draw a portion of a texture onto the screen
+  # 
+  # This function takes two rectangles. The first is the section of the texture to draw, and the second is where to draw it.
+  # The next parameters are to rotate the To rectangle at some Angle, centered around an Origin.
+  # Provide a fill to draw with a color
+  # ? Texture From To Origin Angle
+  Map ← (
+    ⊓(≡₁□|∩(≡₂(□♭)T~Coords)|≡₁□T~Coords|×360|FillColor)
+    ≡₀◇Rayua~DrawTexturePro
+  )
+└─╴
+
 # Draw different shapes onto the screen
 ┌─╴Draw
-  IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
-
   # Fill the whole screen with a color
   # ? Color
   Background ← Rayua~ClearBackground ToRayColor
@@ -100,6 +137,8 @@ T ← Transform
   # ? Color Size Position
   Square ← Rect ⊙≡₀(↯2)
 
+  Texture ← Texture~Draw
+
   ┌─╴Centered
     # Print horizontally centered text to the screen
     # ? Color Size Position Text
@@ -115,47 +154,7 @@ T ← Transform
 
     Circle ← Draw~Circle
   └─╴
-
-  ┌─╴Texture
-    # Load a texture from a filepath
-    # Texture ? Path
-    Load ← (Rayua~LoadTexture)
-
-    # Unload a texture, freeing it's memory
-    Unload ← (Rayua~UnloadTexture)
-
-    # Get the dimensions of a texture
-    Size ← ℂ≡₁Rayua~Texture!⊃Width Height
-
-    FillColor ↚ (≡₁□ ToRayColor ⍣(⊸IsColor °◌|White))
-
-    # Draw a loaded texture onto the screen
-    # Provide a fill to draw with a color
-    # ? Texture Size Position
-    Draw ← (
-      ⊓(≡₁⊃□(□⊂0_0 T~Coords Size)|˜≡₀⍚⊂ ∩(≡₁□T~Coords)) ⊙(⍥(↯2)≍[]⊸△)
-      ≡₀◇Rayua~DrawTexturePro⊙⊙⊙(□0_0 0 FillColor)
-    )
-    Call ← Draw
-
-    # Like `Draw`, but the size is relative to the texture file
-    # ? Texture Scale Position
-    DrawScaled ← Draw ⟜(≡₀°□ × ≡₁(□Size))
-
-    # Draw a portion of a texture onto the screen
-    # 
-    # This function takes two rectangles. The first is the section of the texture to draw, and the second is where to draw it.
-    # The next parameters are to rotate the To rectangle at some Angle, centered around an Origin.
-    # Provide a fill to draw with a color
-    # ? Texture From To Origin Angle
-    Map ← (
-      ⊓(≡₁□|∩(≡₂(□♭)T~Coords)|≡₁□T~Coords|×360|FillColor)
-      ≡₀◇Rayua~DrawTexturePro
-    )
-  └─╴
 └─╴
-
-Texture ← Draw~Texture
 
 ┌─╴Key
   (⍚˙$"_ ← ∘Rayua~Key~_  # The keycode for the _ key\n"
