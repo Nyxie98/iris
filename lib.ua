@@ -46,12 +46,15 @@ T ← Transform
   # A color with an opacity of zero
   Clear ← [0 0 0 0]
 
-  # Convert an rgb color to a Uiua color
-  Rgb ← ÷255
+  # Convert a color from 8-bit rgb to Uiua colors
+  Rgb ← ⌅⁅₄ ÷255 °⌅⁅
+
+  FillOpacity ↚ (⌅(^0|^0))!⬚1≡₀°□
+  HexImpl     ↚ Rgb ⌝⊥16°⌅≡⬚0↙₂ ≡⇌ ⌅(↯∞_2|♭) ˜⊗HexDigits ⌅(⍣⌝⊂◌@#|⊂@#)
 
   # Convert a hexadecimal string into a color
   # Color ? HexString
-  Hex ← Rgb +×16∩⍉ ⧈°⊟¤¤2 °⍉ ⊗⊙HexDigits ⬚@f≡₀◇(↘=@#⊸⊢) BoxStrings ¯⌵
+  Hex ← FillOpacity (⌅(≡₀^0|≡₁°^0))!⍜°□HexImpl BoxStrings ⌅(¯⌵)
 └─╴
 
 # Draw different shapes onto the screen
