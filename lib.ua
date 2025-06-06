@@ -12,7 +12,13 @@ BoxStrings ↚ ⌅(⍥≡₁□=1⊸type|≡₀°□)
   Right ← ¯Left
 
   CImpl ↚ ⍉⊟°ℂ
+
   # Convert an array from complex coordinates to vector cooridinates
+  # 
+  # Returns an array with the shape of the orignal, and and an additional 2-long trailing axis.
+  # The first component is the `X`, and the second is the `Y`.
+  # The imaginary part of a complex number corresponds to `X` and the real part to `Y`.
+  # `°Coords` takes vector coordinates and gives the complex equivalent.
   # Coordinates ? Complex
   Coords ← ⌅(⍥CImpl=3⊸type|⍥°CImpl=0⊸type)
 
@@ -47,13 +53,24 @@ T ← Transform
   Clear ← [0 0 0 0]
 
   # Convert a color from 8-bit rgb to Uiua colors
+  # 
+  # Uiua color channels are represented by values `0-1`, while standard graphics uses integers from `0-255`.
+  # Colors are rounded to four decimal places so that they display nicely (this will not affect their 8-bit value.)
+  # `°Rgb` converts a Uiua color back to an 8-bit color.
+  # Both `Rgb` and `°Rgb` clamp the values to be within the correct ranges.
   # UiuaColor ? RgbColor
-  Rgb ← ⌅⁅₄ ÷255 °⌅⁅
+  Rgb ← ⌅(↥0↧1⁅₄) ÷255 °⌅(↥0↧255⁅)
 
   FillOpacity ↚ (⌅(^0|^0))!⬚1≡₀°□
   HexImpl     ↚ Rgb ⌝⊥16°⌅≡⬚0↙₂ ≡⇌ ⌅(↯∞_2|♭) ˜⊗HexDigits ⌅(⍣⌝⊂◌@#|⊂@#)
 
   # Convert a hexadecimal string into a color
+  # 
+  # Expects a string in the form `#RRGGBB` where all the letters are hexadecimal digits corresponding to color channels.
+  # The leading `#` can be omitted, and and alpha channel can also be specified at the end.
+  # This function is pervasive, and will convert an array of strings, or an array of box strings into an array of colors.
+  # The output will always be non-box, so if a single string has an alpha channel, all of the output will.
+  # `°Hex` converts a color back into a hexidecimal string, always including the `#`.
   # Color ? HexString
   Hex ← FillOpacity (⌅(≡₀^0|≡₁°^0))!⍜°□HexImpl BoxStrings ⌅(¯⌵)
 
@@ -66,6 +83,9 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
 
 ┌─╴Texture
   # Load a texture from a filepath
+  # 
+  # The file must contain an image, and have the proper extension for the image format.
+  # `⍜LoadFile` will load the texture, and then free the memory when the function is over.
   # Texture ? Path
   LoadFile ← Rayua!⌅(LoadTexture|.LoadTexture|UnloadTexture)
 
@@ -273,6 +293,9 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
   Change ← (°T~Coords Rayua~GetMouseDelta)
 
   # Hide the mouse from the user
+  # 
+  # `°Hide` will make the mouse reappear.
+  # The user can still use the mouse while it it hidden. The affect is purely visual.
   Hide ← ⌅(Rayua~HideCursor|Rayua~ShowCursor)
 
   # The direction the mouse is scrolling
