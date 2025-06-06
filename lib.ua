@@ -275,6 +275,17 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
   # Hide the mouse from the user
   Hide ← ⌅(Rayua~HideCursor|Rayua~ShowCursor)
 
+  # The direction the mouse is scrolling
+  # 
+  # Returns `0` if the mouse has not scrolled, and `1` or `¯1` depending on the direction scrolled.
+  # The sign may not nicely correspond to 'up' or 'down' since the direction of scrolling depends on the user's device.
+  Scroll ← (⊣Rayua~GetMouseWheelMoveV)
+
+  # Call a function on the scroll direction when the wheel is scrolled
+  # 
+  # The function will be called on a value of either `1` or `¯1`, but never `0`
+  Scroll! ← ⨬◌(^0) ⊸≠0 Scroll
+
   # Call a function on the mouse position when a button is pressed
   # 
   # The first function is the button to run the function on (or identity to take from the stack)
