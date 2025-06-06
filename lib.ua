@@ -1,5 +1,6 @@
 # Experimental!
-Rayua ~ "git: github.com/uiua-lang/rayua"
+# Rayua ~ "git: github.com/uiua-lang/rayua"
+Rayua ~ "../../rayua/lib"
 
 ToRayColor ↚ ⌅(⍜°⍉⬚255↙₄⁅) ×255
 BoxStrings ↚ ⌅(⍥≡₁□=1⊸type|≡₀°□)
@@ -47,6 +48,7 @@ T ← Transform
   Clear ← [0 0 0 0]
 
   # Convert a color from 8-bit rgb to Uiua colors
+  # UiuaColor ? RgbColor
   Rgb ← ⌅⁅₄ ÷255 °⌅⁅
 
   FillOpacity ↚ (⌅(^0|^0))!⬚1≡₀°□
@@ -55,6 +57,10 @@ T ← Transform
   # Convert a hexadecimal string into a color
   # Color ? HexString
   Hex ← FillOpacity (⌅(≡₀^0|≡₁°^0))!⍜°□HexImpl BoxStrings ⌅(¯⌵)
+
+  # Remove the alpha channel of an image
+  # OpaqueImage ? Image
+  StripAlpha ← ⌅(⍜°⍉↙₃|⍜°⍉⬚1↙₄)
 └─╴
 
 IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
@@ -62,12 +68,31 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
 ┌─╴Texture
   # Load a texture from a filepath
   # Texture ? Path
-  Load ← Rayua!⌅(LoadTexture|.LoadTexture|UnloadTexture)
+  LoadFile ← Rayua!⌅(LoadTexture|.LoadTexture|UnloadTexture)
 
   # Unload a texture, freeing it's memory
+  # ? Texture
   Unload ← Rayua~UnloadTexture
 
+  ReadImageData ↚ ↯⤙(&memcpy"unsigned char"⊙/×) Rayua~Image!(Data⟜[⊃Height Width⊙4])
+
+  ToRayImage ↚ Rayua!⌅(Image ⊃(♭ ToRayColor|°⊟△₂|1 7)|UnloadImage⟜(°ToRayColor ReadImageData))
+
+  # Get the image in a texture, without unloading the texture
+  # Image ? Texture
+  Image ← (⌅(^0|⟜^0|^1))!(
+    ⍥Color~StripAlpha⊸(/×=1♭⊣°⍉) °ToRayImage Rayua~LoadImageFromTexture
+  | ⟜Rayua~UpdateTexture⊙(♭ ToRayColor))
+
+  # Load a texture from a Uiua image array
+  # Texture ? Image
+  LoadImage ← (⌅(^0|^1|.^0|^2))‼(
+    Rayua~LoadTextureFromImage ToRayImage
+  | Unload⟜Image
+  | Unload)
+
   # Get the dimensions of a texture
+  # Size ? Texture
   Size ← ℂ≡₁Rayua~Texture!⊃Width Height
 
   FillColor ↚ (≡₁□ ToRayColor ⍣(⊸IsColor °◌|White))
