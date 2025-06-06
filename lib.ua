@@ -1,6 +1,6 @@
 # Experimental!
-# Rayua ~ "git: github.com/uiua-lang/rayua"
-Rayua ~ "../../rayua/lib"
+# Rayua ~ "../../rayua/lib"
+Rayua ~ "git: github.com/uiua-lang/rayua"
 
 ToRayColor ↚ ⌅(⍜°⍉⬚255↙₄⁅) ×255
 BoxStrings ↚ ⌅(⍥≡₁□=1⊸type|≡₀°□)
