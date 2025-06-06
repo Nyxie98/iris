@@ -344,7 +344,7 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
   FPS ← ⌅(Rayua~GetFPS|Rayua~SetTargetFPS)
 └─╴
 
-# Open a new screen with title
+# Open a new screen with a title
 # ? Size Title
 Open ← Rayua~InitWindow ⊓(°⊟ ⍥(↯2)≍[]⊸△ T~Coords|$"_")
 
