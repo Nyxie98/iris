@@ -370,7 +370,10 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
 
 # Open a new screen with a title
 # ? Size Title
-Open ← Rayua~InitWindow ⊓(°⊟ ⍥(↯2)≍[]⊸△ T~Coords|$"_")
+Open ← Rayua~InitWindow ⊓(°⊟ ⍥(↯2)≍[]⊸△ T~Coords|$"_") Rayua~SetTraceLogLevel Rayua~TraceLogLevel~Warning
+
+# Sets the trace log to `DEBUG`, printing extra information about what Raylib is doing
+Debug ← Rayua~SetTraceLogLevel Rayua~TraceLogLevel~Debug
 
 # Number of seconds since the screen opened
 # Seconds ? 
