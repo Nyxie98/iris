@@ -1,7 +1,7 @@
 # Experimental!
 Rayua ~ "git: github.com/uiua-lang/rayua"
 
-ToRayColor ↚ ⌅(⍜°⍉⬚255↙₄⁅) ×255
+ToRayColor ↚ ⌅(⍥(⍜°⍉⬚255↙₄)⊸(=3⊣△) ⁅) ×255
 BoxStrings ↚ ⌅(⍥≡₁□=1⊸type|≡₀°□)
 
 # Transformations
@@ -82,37 +82,61 @@ T ← Transform
 IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
 
 ┌─╴Texture
+  # This struct is for internal use, if you mess with it stuff might crash!
+  ~Data {Buffer ColorFormat}
+  # 0 = Black and white, 1 = Color, 2 = Black and white alpha, 3 = Color alpha
+
+  # Unload a texture, freeing it's memory
+  # ? Texture
+  Unload ← Rayua~UnloadTexture Data~Buffer
+
+  # Get the dimensions of a texture
+  # Size ? Texture
+  Size ← ℂ≡₁(Rayua~Texture!⊃Width Height Data~Buffer)
+
   # Load a texture from a filepath
   # 
   # The file must contain an image, and have the proper extension for the image format.
   # `⍜LoadFile` will load the texture, and then free the memory when the function is over.
   # Texture ? Path
-  LoadFile ← Rayua!⌅(LoadTexture|.LoadTexture|UnloadTexture)
+  LoadFile ← (⌅(^0|.^0|^1))!(Data ⊙3 Rayua~LoadTexture|Unload)
 
-  # Unload a texture, freeing it's memory
-  # ? Texture
-  Unload ← Rayua~UnloadTexture
+  # ? Image
+  ColorFormat ↚ ⍤"Image does not have a possible color format"⊸≠4 ˜⊗{[][3][2][4]} □↘₂△
+  FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
 
-  ReadImageData ↚ ↯⤙(&memcpy"unsigned char"⊙/×) Rayua~Image!(Data⟜[⊃Height Width⊙4])
+  # ? Image
+  ToFullColor ↚ ⨬(⍉˜⊂1↯3|⍜°⍉⬚1↙₄|⍜°⍉(▽3_1)|∘) ⊸ColorFormat
 
-  ToRayImage ↚ Rayua!⌅(Image ⊃(♭ ToRayColor|°⊟△₂|1 7)|UnloadImage⟜(°ToRayColor ReadImageData))
+  # ? Data Image
+  ToFormat ↚ |2 ⨬(⊢°⍉|⍜°⍉↙₃|⍜°⍉(⊏0_3)|∘) Data~ColorFormat
 
+  # Reads the literal bytes from the buffer with no processing, only shaping
+  ReadImageData ↚ ↯⤙(&memcpy"unsigned char"⊙/×) Rayua~Image!(Data⟜[⊃Height Width⊙4]) Data~Buffer
+
+  ToRayImage ↚ ⌅(
+    Data ⊃(Rayua~Image ⊃(♭ ToRayColor ToFullColor|°⊟△₂|1 7)|ColorFormat)
+  | Rayua~UnloadImage Data~Buffer⟜(ToFormat|°ToRayColor ReadImageData))
+
+  ImageMatchesData ↚ ×⊃(≍/ℂ△₂|≍ColorFormat ⊙⋅∘) ⊙⊃(Size|Data~ColorFormat)
+  ImageError ↚ ⨬(
+    ∩($"_ _"⊓/$"_x_"FormatName) ⊓(⊃△₂ ColorFormat|⊃(⊟°ℂSize) Data~ColorFormat)
+    ˜⍤0 $"A _ image was provided, but the texture is a _ image."
+  )⋅◌ ◡ImageMatchesData
+
+  # Track caller!
   # Get the image in a texture, without unloading the texture
   # Image ? Texture
   Image ← (⌅(^0|⟜^0|^1))!(
-    ⍥Color~StripAlpha⊸(/×=1♭⊣°⍉) °ToRayImage Rayua~LoadImageFromTexture
-  | ⟜Rayua~UpdateTexture⊙(♭ ToRayColor))
+    °ToRayImage ⍜Data~Buffer Rayua~LoadImageFromTexture
+  | ⟜(Rayua~UpdateTexture Data~Buffer)⊙(♭ ToRayColor ToFullColor) ◡˜ImageError)
 
   # Load a texture from a Uiua image array
   # Texture ? Image
   LoadImage ← (⌅(^0|^1|.^0|^2))‼(
-    Rayua~LoadTextureFromImage ToRayImage
+    ⍜Data~Buffer Rayua~LoadTextureFromImage ToRayImage
   | Unload⟜Image
   | Unload)
-
-  # Get the dimensions of a texture
-  # Size ? Texture
-  Size ← ℂ≡₁Rayua~Texture!⊃Width Height
 
   FillColor ↚ (≡₁□ ToRayColor ⍣(⊸IsColor °◌|White))
 
@@ -121,7 +145,7 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
   # ? Texture Size Position
   Draw ← (
     ⊓(≡₁⊃□(□⊂0_0 T~Coords Size)|˜≡₀⍚⊂ ∩(≡₁□T~Coords)) ⊙(⍥(↯2)≍[]⊸△)
-    ≡₀◇Rayua~DrawTexturePro⊙⊙⊙(□0_0 0 FillColor)
+    ≡₀◇(Rayua~DrawTexturePro Data~Buffer)⊙⊙⊙(□0_0 0 FillColor)
   )
 
   # Like `Draw`, but the size is relative to the texture file
@@ -136,7 +160,7 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
   # ? Texture From To Origin Angle
   Map ← (
     ⊓(≡₁□|∩(≡₂(□♭)T~Coords)|≡₁□T~Coords|×360|FillColor)
-    ≡₀◇Rayua~DrawTexturePro
+    ≡₀◇(Rayua~DrawTexturePro Data~Buffer)
   )
 └─╴
 
