@@ -81,12 +81,32 @@ T ← Transform
 
 IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
 
+┌─╴Screen
+  # Check if the screen is fullscreen
+  # Inverse will set the screen state
+  Full ← ⌅(Rayua~IsWindowFullscreen|⍥Rayua~ToggleFullscreen≠Rayua~IsWindowFullscreen)
+
+  # Get the size of the screen
+  # Inverse will set the size
+  Size ← °T~Coords ⌅(⊟Rayua~GetRenderWidth Rayua~GetRenderHeight|Rayua~SetWindowSize °⊟ ⍥(↯2)≍[]⊸△ °Full 1)
+
+  # Get the size of the screen when it is fullscreen
+  FullSize ← °T~Coords⊟ Rayua!⊃GetMonitorWidth GetMonitorHeight (Rayua~GetCurrentMonitor)
+
+  # Get the current FPS
+  # Inverse will set the target FPS for the screen
+  FPS ← ⌅(Rayua~GetFPS|Rayua~SetTargetFPS)
+└─╴
+
 ┌─╴Texture
   # This struct is for internal use, if you mess with it stuff might crash!
   ~Data {Buffer ColorFormat}
   # 0 = Black and white, 1 = Color, 2 = Black and white alpha, 3 = Color alpha
 
   # Unload a texture, freeing it's memory
+  # 
+  # Once a texture is unloaded, attempting to draw it will result in an all-black texture.
+  # Calling this function multiple times on a texture will not doing anything.
   # ? Texture
   Unload ← Rayua~UnloadTexture Data~Buffer
 
@@ -97,6 +117,7 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
   # Load a texture from a filepath
   # 
   # The file must contain an image, and have the proper extension for the image format.
+  # The color format of a texture created this way is always color with an alpha channel.
   # `⍜LoadFile` will load the texture, and then free the memory when the function is over.
   # Texture ? Path
   LoadFile ← (⌅(^0|.^0|^1))!(Data ⊙3 Rayua~LoadTexture|Unload)
@@ -126,12 +147,22 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
 
   # Track caller!
   # Get the image in a texture, without unloading the texture
+  # 
+  # `Image` remembers the color format of the image you made the texture with. If you provided a grayscale, you will get back a grayscale.
+  # `°⊸Image` edits the image in a texture. It takes the new image as the first argument and the texture as the second argument.
+  # `⍜Image` gets the image, allows you to change it, and then puts the new image back in the texture.
+  # If any of the properties of the image are altered, like the shape or the color format, this function will error.
   # Image ? Texture
   Image ← (⌅(^0|⟜^0|^1))!(
     °ToRayImage ⍜Data~Buffer Rayua~LoadImageFromTexture
   | ⟜(Rayua~UpdateTexture Data~Buffer)⊙(♭ ToRayColor ToFullColor) ◡˜ImageError)
 
   # Load a texture from a Uiua image array
+  # 
+  # The provided image can be in any color format a Uiua image can be in, except for complex domain coloring.
+  # The formats are defined [in the Uiua tutorial.](https://www.uiua.org/tutorial/images)
+  # The format you use to create the texture is the only one that may be used by the texture.
+  # Calling `Image` will result in an image of the same format.
   # Texture ? Image
   LoadImage ← (⌅(^0|^1|.^0|^2))‼(
     ⍜Data~Buffer Rayua~LoadTextureFromImage ToRayImage
@@ -151,6 +182,12 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
   # Like `Draw`, but the size is relative to the texture file
   # ? Texture Scale Position
   DrawScaled ← Draw ⟜(≡₀°□ × ≡₁(□Size))
+
+  # Draw a texture covering the whole screen.
+  # 
+  # The texture will be stretched/scaled to properly fit the size of the screen.
+  # ? Texture
+  DrawScreen ← Draw⊙(Screen~Size 0_0)
 
   # Draw a portion of a texture onto the screen
   # 
@@ -333,6 +370,15 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
   # The function will be called on a value of either `1` or `¯1`, but never `0`
   Scroll! ← ⨬◌(^0) ⊸≠0 Scroll
 
+  # Call a function when the user drags the mouse
+  # 
+  # The first function is the mouse button that must be down while dragging. 
+  # If it is monadic it will pull from the stack.
+  # The second function is called when a drag occurs and is supplied the distance dragged.
+  # If the mouse does not move, this will not trigger, thus the distance cannot be zero.
+  # ? Button Function
+  Drag‼ ← ⨬◌(^1) ×Down ⊙(⊸≠0 Change) ^0
+
   # Call a function on the mouse position when a button is pressed
   # 
   # The first function is the button to run the function on (or identity to take from the stack)
@@ -349,23 +395,6 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
 
   # Check if the mouse is on the screen
   OnScreen ← (Rayua~IsCursorOnScreen)
-└─╴
-
-┌─╴Screen
-  # Check if the screen is fullscreen
-  # Inverse will set the screen state
-  Full ← ⌅(Rayua~IsWindowFullscreen|⍥Rayua~ToggleFullscreen≠Rayua~IsWindowFullscreen)
-
-  # Get the size of the screen
-  # Inverse will set the size
-  Size ← °T~Coords ⌅(⊟Rayua~GetRenderWidth Rayua~GetRenderHeight|Rayua~SetWindowSize °⊟ ⍥(↯2)≍[]⊸△ °Full 1)
-
-  # Get the size of the screen when it is fullscreen
-  FullSize ← °T~Coords⊟ Rayua!⊃GetMonitorWidth GetMonitorHeight (Rayua~GetCurrentMonitor)
-
-  # Get the current FPS
-  # Inverse will set the target FPS for the screen
-  FPS ← ⌅(Rayua~GetFPS|Rayua~SetTargetFPS)
 └─╴
 
 # Open a new screen with a title
