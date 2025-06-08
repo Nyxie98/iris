@@ -34,6 +34,8 @@ This is a list of the core improvements over Rayua that drove me to write this.
 
 [Function Docs](https://marcos-cat.github.io/iris/)
 
+[Examples](https://github.com/Marcos-cat/iris-examples)
+
 ## Projects in Iris
 
 - [Wordle](https://github.com/Marcos-cat/wordle-uiua)
