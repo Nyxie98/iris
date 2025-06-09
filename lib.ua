@@ -139,11 +139,11 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
     Data ⊃(Rayua~Image ⊃(♭ ToRayColor ToFullColor|°⊟⇌△₂|1 7)|ColorFormat)
   | Rayua~UnloadImage Data~Buffer⟜(ToFormat|°ToRayColor ReadImageData))
 
-  ImageMatchesData ↚ ×⊃(≍/ℂ△₂|≍ColorFormat ⊙⋅∘) ⊙⊃(Size|Data~ColorFormat)
+  ImageAndTextureData ↚ ⊓(⊃(⇌△₂) ColorFormat|⊃(⊟°ℂSize) Data~ColorFormat)
   ImageError ↚ ⨬(
-    ∩($"_ _"⊓/$"_x_"FormatName) ⊓(⊃(⇌△₂) ColorFormat|⊃(⊟°ℂSize) Data~ColorFormat)
+    ∩($"_ _"⊓/$"_x_"FormatName) ImageAndTextureData
     ˜⍤0 $"A _ image was provided, but the texture is a _ image."
-  )⋅◌ ◡ImageMatchesData
+  )⋅◌ ◡(×˜∩≍ ImageAndTextureData)
 
   # Track caller!
   # Get the image in a texture, without unloading the texture
