@@ -136,7 +136,7 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
   ReadImageData ↚ ↯⤙(&memcpy"unsigned char"⊙/×) Rayua~Image!(Data⟜[⊃Height Width⊙4]) Data~Buffer
 
   ToRayImage ↚ ⌅(
-    Data ⊃(Rayua~Image ⊃(♭ ToRayColor ToFullColor|°⊟△₂|1 7)|ColorFormat)
+    Data ⊃(Rayua~Image ⊃(♭ ToRayColor ToFullColor|°⊟⇌△₂|1 7)|ColorFormat)
   | Rayua~UnloadImage Data~Buffer⟜(ToFormat|°ToRayColor ReadImageData))
 
   ImageMatchesData ↚ ×⊃(≍/ℂ△₂|≍ColorFormat ⊙⋅∘) ⊙⊃(Size|Data~ColorFormat)
