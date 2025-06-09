@@ -141,7 +141,7 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
 
   ImageMatchesData ↚ ×⊃(≍/ℂ△₂|≍ColorFormat ⊙⋅∘) ⊙⊃(Size|Data~ColorFormat)
   ImageError ↚ ⨬(
-    ∩($"_ _"⊓/$"_x_"FormatName) ⊓(⊃△₂ ColorFormat|⊃(⊟°ℂSize) Data~ColorFormat)
+    ∩($"_ _"⊓/$"_x_"FormatName) ⊓(⊃(⇌△₂) ColorFormat|⊃(⊟°ℂSize) Data~ColorFormat)
     ˜⍤0 $"A _ image was provided, but the texture is a _ image."
   )⋅◌ ◡ImageMatchesData
 
