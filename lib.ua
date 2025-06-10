@@ -3,6 +3,7 @@ Rayua ≁ "git: github.com/uiua-lang/rayua"
 
 ToRayColor ↚ ⌅(⍥(⍜°⍉⬚255↙₄)⊸(=3⊣△) ⁅) ×255
 BoxStrings ↚ ⌅(⍥≡₁□=1⊸type|≡₀°□)
+Os‼        ↚^ ▽≍os°□₂
 
 # Transformations
 ┌─╴Transform
@@ -96,7 +97,7 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
 
   # Get the size of the screen
   # Inverse will set the size
-  Size ← °T~Coords ⌅(⊟Rayua~GetRenderWidth Rayua~GetRenderHeight|Rayua~SetWindowSize °⊟ ⍥(↯2)≍[]⊸△ °Full 1)
+  Size ← °T~Coords ⌅(Os‼macos÷₂ ⊟Rayua~GetRenderWidth Rayua~GetRenderHeight|Rayua~SetWindowSize °⊟ ⍥(↯2)≍[]⊸△ °Full 1)
 
   # Get the size of the screen when it is fullscreen
   FullSize ← °T~Coords⊟ Rayua!⊃GetMonitorWidth GetMonitorHeight (Rayua~GetCurrentMonitor)
