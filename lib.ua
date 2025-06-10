@@ -128,6 +128,7 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
   # The file must contain an image, and have the proper extension for the image format.
   # The color format of a texture created this way is always color with an alpha channel.
   # `⍜LoadFile` will load the texture, and then free the memory when the function is over.
+  # [NOTE] You cannot load a texture before `Open` is called, it will cause a segfault.
   # Texture ? Path
   LoadFile ← (⌅(^0|.^0|^1))!(Data ⊙3 Rayua~LoadTexture|Unload)
 
@@ -151,7 +152,7 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
   )⋅◌ ◡(×˜∩≍ ImageAndTextureData)
 
   # Track caller!
-  # Get the image in a texture, without unloading the texture
+  # Get the image in a texture without unloading the texture
   # 
   # `Image` remembers the color format of the image you made the texture with. If you provided a grayscale, you will get back a grayscale.
   # `°⊸Image` edits the image in a texture. It takes the new image as the first argument and the texture as the second argument.
@@ -168,6 +169,7 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
   # The formats are defined [in the Uiua tutorial.](https://www.uiua.org/tutorial/images)
   # The format you use to create the texture is the only one that may be used by the texture.
   # Calling `Image` will result in an image of the same format.
+  # [NOTE] You cannot load a texture before `Open` is called, it will cause a segfault.
   # Texture ? Image
   LoadImage ← (⌅(^0|^1|.^0|^2))‼(
     ⍜Data~Buffer Rayua~LoadTextureFromImage ToRayImage
@@ -416,11 +418,4 @@ Time ← (Rayua~GetTime)
 # Delta-time since last frame in seconds
 Dt ← (Rayua~GetFrameTime)
 
-Loop! ← (
-  ⍢(Rayua~BeginDrawing
-    ^0
-    Rayua~EndDrawing
-  | ¬ Rayua~WindowShouldClose
-  )
-  Rayua~CloseWindow
-)
+Loop! ← Rayua~CloseWindow ⍢(Rayua~EndDrawing ^0 Rayua~BeginDrawing|¬Rayua~WindowShouldClose)
