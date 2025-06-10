@@ -1,5 +1,5 @@
 # Experimental!
-Rayua ~ "git: github.com/uiua-lang/rayua"
+Rayua ≁ "git: github.com/uiua-lang/rayua"
 
 ToRayColor ↚ ⌅(⍥(⍜°⍉⬚255↙₄)⊸(=3⊣△) ⁅) ×255
 BoxStrings ↚ ⌅(⍥≡₁□=1⊸type|≡₀°□)
@@ -48,6 +48,11 @@ T ← Transform
   RectCircle ← > ⌵- ⊸(↥⊙↧) °⊟\+°⍉°T~Coords ⊙:
 └─╴
 
+# 0 = Black and white, 1 = Color, 2 = Black and white alpha, 3 = Color alpha
+# ? Image
+ColorFormat ↚ ⍤"Image does not have a possible color format"⊸≠4 ˜⊗{[][3][2][4]} □↘₂△
+FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
+
 ┌─╴Color
   # A color with an opacity of zero
   Clear ← [0 0 0 0]
@@ -74,12 +79,15 @@ T ← Transform
   # Color ? HexString
   Hex ← FillOpacity (⌅(≡₀^0|≡₁°^0))!⍜°□HexImpl BoxStrings ⌅(¯⌵)
 
-  # Remove the alpha channel of an image
-  # OpaqueImage ? Image
-  StripAlpha ← ⌅(⍜°⍉↙₃|⍜°⍉⬚1↙₄)
+  # Track caller!
+  # Get the alpha channel (transparency) of an image
+  # 
+  # If `Alpha` is called on an image without an alpha channel, a fully opaque one will be added.
+  # `⍜Alpha` edits the alpha channel, and `°⊸Alpha` can be used to set it.
+  # For either inverse if a scalar is provided the entire alpha channel will be set to it.
+  # `0` is fully transparent and `1` is fully opaque.
+  Alpha ← ⊣°⍉ ⌅(⨬(⍉˜⊂1|⍜°⍉⬚1↙₄|∘|∘)⊸ColorFormat)
 └─╴
-
-IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
 
 ┌─╴Screen
   # Check if the screen is fullscreen
@@ -98,10 +106,10 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
   FPS ← ⌅(Rayua~GetFPS|Rayua~SetTargetFPS)
 └─╴
 
+IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
+
 ┌─╴Texture
-  # This struct is for internal use, if you mess with it stuff might crash!
-  ~Data {Buffer ColorFormat}
-  # 0 = Black and white, 1 = Color, 2 = Black and white alpha, 3 = Color alpha
+  ≁Data {Buffer ColorFormat}
 
   # Unload a texture, freeing it's memory
   # 
@@ -121,10 +129,6 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
   # `⍜LoadFile` will load the texture, and then free the memory when the function is over.
   # Texture ? Path
   LoadFile ← (⌅(^0|.^0|^1))!(Data ⊙3 Rayua~LoadTexture|Unload)
-
-  # ? Image
-  ColorFormat ↚ ⍤"Image does not have a possible color format"⊸≠4 ˜⊗{[][3][2][4]} □↘₂△
-  FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
 
   # ? Image
   ToFullColor ↚ ⨬(⍉˜⊂1↯3|⍜°⍉⬚1↙₄|⍜°⍉(▽3_1)|∘) ⊸ColorFormat
