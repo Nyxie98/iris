@@ -41,6 +41,7 @@ This is a list of the core improvements over Rayua that drove me to write this.
 - [Wordle](https://github.com/Marcos-cat/wordle-uiua)
 - [Fractal Zoom](https://github.com/ronondex2009/Uiua-Interactive-Fractal-Zoomer)
 - [Minesweeper](https://github.com/Marcos-cat/minesweeper-uiua)
+- [Bejeweled](https://github.com/donstenzel/bejeweled-uiua)
 
 ## Basic example
 
