@@ -1,8 +1,9 @@
 # Experimental!
-Rayua ≁ "git: github.com/uiua-lang/rayua"
+Rayua ~ "git: github.com/uiua-lang/rayua"
 
 ToRayColor ↚ ⌅(⍥(⍜°⍉⬚255↙₄)⊸(=3⊣△) ⁅) ×255
 BoxStrings ↚ ⌅(⍥≡₁□=1⊸type|≡₀°□)
+F          ↚ ⍥(⊂@\n)>1⊃⧻/$"_\n_"pretty
 Os‼        ↚^ ▽≍os°□₂
 
 # Transformations
@@ -80,31 +81,54 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
   # Color ? HexString
   Hex ← FillOpacity (⌅(≡₀^0|≡₁°^0))!⍜°□HexImpl BoxStrings ⌅(¯⌵)
 
-  # Track caller!
   # Get the alpha channel (transparency) of an image
   # 
   # If `Alpha` is called on an image without an alpha channel, a fully opaque one will be added.
   # `⍜Alpha` edits the alpha channel, and `°⊸Alpha` can be used to set it.
   # For either inverse if a scalar is provided the entire alpha channel will be set to it.
   # `0` is fully transparent and `1` is fully opaque.
+  # Track caller!
   Alpha ← ⊣°⍉ ⌅(⨬(⍉˜⊂1|⍜°⍉⬚1↙₄|∘|∘)⊸ColorFormat)
 └─╴
 
 ┌─╴Screen
   # Check if the screen is fullscreen
-  # Inverse will set the screen state
-  Full ← ⌅(Rayua~IsWindowFullscreen|⍥Rayua~ToggleFullscreen≠Rayua~IsWindowFullscreen)
+  # 
+  # `Full` returns a boolean to tell if the screen is in fullscreen mode.
+  # `°Full` can be passed a boolean to set the state of fullscreen mode.
+  # A common pattern to toggle fullscreen is `⍜Full¬`.
+  # Track caller!
+  Full ← ⌅(
+    Rayua~IsWindowFullscreen
+  | ⍥⊸(˜⍤$"Fullscreen state must be a boolean, but it is _"F)¬≍1⊸∊0_1
+    ⍥Rayua~ToggleFullscreen≠Rayua~IsWindowFullscreen)
 
-  # Get the size of the screen
-  # Inverse will set the size
-  Size ← °T~Coords ⌅(Os‼macos÷₂ ⊟Rayua~GetRenderWidth Rayua~GetRenderHeight|Rayua~SetWindowSize °⊟ ⍥(↯2)≍[]⊸△ °Full 1)
+  # The size of the screen
+  # 
+  # The dimensions returned are in pixels.
+  # `°Size` sets the size of the screen.
+  # If the screen is in fullscreen mode when `°Size` is called, fullscreen mode with be turned off.
+  # Neither dimension of the screen can be zero.
+  # If a single number is given as the dimensions, it will be used as both the width and the height.
+  # Track caller!
+  Size ← (°T~Coords ⌅(
+      Os‼macos÷₂ ⊟Rayua~GetRenderWidth Rayua~GetRenderHeight
+    | ⍥⊸(˜⍤0$"Screen size must be greater than zero, but it is _"F) ¬×⊸⊃(≍1/×>0|≍[2]△) ⌈ ⍥(↯2)≍[]⊸△ °Full 0
+      Rayua~SetWindowSize °⊟))
 
   # Get the size of the screen when it is fullscreen
-  FullSize ← °T~Coords⊟ Rayua!⊃GetMonitorWidth GetMonitorHeight (Rayua~GetCurrentMonitor)
+  FullSize ← (°T~Coords⊟ Rayua!⊃GetMonitorWidth GetMonitorHeight Rayua~GetCurrentMonitor)
 
-  # Get the current FPS
-  # Inverse will set the target FPS for the screen
-  FPS ← ⌅(Rayua~GetFPS|Rayua~SetTargetFPS)
+  # The active FPS (framerate)
+  # 
+  # `FPS` returns the actual framerate, which varies based on how long your device takes to run a frame.
+  # `°FPS` sets the maximum FPS. By default, the FPS is unbounded, and frames will be run as fast as possible.
+  # `FPS` can take `∞` to have the fastest possible framerate (the default behavior.)
+  # Track caller!
+  FPS ← ⌅(
+    Rayua~GetFPS
+  | ⍥⊸(˜⍤0$"FPS must be greater than zero, but it is _"F)¬×⊸⊃(>0|≍[]△) ⌈
+    Rayua~SetTargetFPS)
 └─╴
 
 IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
@@ -151,7 +175,6 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
     ˜⍤0 $"A _ image was provided, but the texture is a _ image."
   )⋅◌ ◡(×˜∩≍ ImageAndTextureData)
 
-  # Track caller!
   # Get the image in a texture without unloading the texture
   # 
   # `Image` remembers the color format of the image you made the texture with. If you provided a grayscale, you will get back a grayscale.
@@ -159,6 +182,7 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
   # `⍜Image` gets the image, allows you to change it, and then puts the new image back in the texture.
   # If any of the properties of the image are altered, like the shape or the color format, this function will error.
   # Image ? Texture
+  # Track caller!
   Image ← (⌅(^0|⟜^0|^1))!(
     °ToRayImage ⍜Data~Buffer Rayua~LoadImageFromTexture
   | ⟜(Rayua~UpdateTexture Data~Buffer)⊙(♭ ToRayColor ToFullColor) ◡˜ImageError)
@@ -215,11 +239,13 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
   Background ← Rayua~ClearBackground ToRayColor
 
   # Draw a line on the screen
-  # Use a fill to set the thickness
-  # ? Color A B
+  # 
+  # A line will draw from point A to point B, even if either are off-screen.
+  # A thickness of zero will cause the lines not to draw at all.
+  # ? Color Thickness A B
   Line ← (
-    ⊓(≡₁□ToRayColor|∩(≡₁□T~Coords))
-    ⍣(≡₀◇Rayua~DrawLineEx⊙⊙(°0⊸type°◌)|≡₀◇Rayua~DrawLine) ⤚⋅⊙∘
+    ⊓(≡₁□ToRayColor|↥0⌈|∩(≡₁□T~Coords))
+    ≡₀◇Rayua~DrawLineEx ⤚⋅⤚⋅⊙∘
   )
 
   # Draw a circle on the screen
