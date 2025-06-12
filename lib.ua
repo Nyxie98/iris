@@ -206,7 +206,8 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
   # Provide a fill to draw with a color
   # ? Texture Size Position
   Draw ← (
-    ⊓(≡₁⊃□(□⊂0_0 T~Coords Size)|˜≡₀⍚⊂ ∩(≡₁□T~Coords)) ⊙(⍥(↯2)≍[]⊸△)
+    ⊙(⍥(↯2)≍[]⊸△ T~Coords)
+    ⊓(≡₁⊃□(□⊂0_0 T~Coords Size)|˜≡₀⍚⊂ ∩(≡₁□T~Coords))
     ≡₀◇(Rayua~DrawTexturePro Data~Buffer)⊙⊙⊙(□0_0 0 FillColor)
   )
 
@@ -291,6 +292,8 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
     Square ← Rect ⊙(ℂ.)
 
     Circle ← Draw~Circle
+
+    Texture ← Draw~Texture ⊙⟜(-÷₂∩T!°Coords)
   └─╴
 └─╴
 
