@@ -5,6 +5,7 @@ ToRayColor ↚ ⌅(⍥(⍜°⍉⬚255↙₄)⊸(=3⊣△) ⁅) ×255
 BoxStrings ↚ ⌅(⍥≡₁□=1⊸type|≡₀°□)
 F          ↚ ⍥(⊂@\n)>1⊃⧻/$"_\n_"pretty
 Os‼        ↚^ ▽≍os°□₂
+S!         ↚^ $"⊃(_)"/$"_|_"˜⍚⊂@∘˜⍚↯@⋅-@a°□₁
 
 # Transformations
 ┌─╴Transform
@@ -15,14 +16,21 @@ Os‼        ↚^ ▽≍os°□₂
 
   CImpl ↚ ⍉⊟°ℂ
 
+  CoordError ↚ ⨬(
+    ⨬◌(˜⍤0$"Expected number array with X and Y components, but got shape _")≠2⊸⬚2⊣◌
+  | ◌◌
+  | ˜⍤0$"Expeced number or complex array, but got a _ array" ⨬"character""box"=1 ⊙◌
+  )⊸˜⊗0_3 ⊃type△
+
   # Convert an array from complex coordinates to vector cooridinates
-  # 
+  #
   # Returns an array with the shape of the orignal, and and an additional 2-long trailing axis.
   # The first component is the `X`, and the second is the `Y`.
   # The imaginary part of a complex number corresponds to `X` and the real part to `Y`.
   # `°Coords` takes vector coordinates and gives the complex equivalent.
   # Coordinates ? Complex
-  Coords ← ⌅(⍥CImpl=3⊸type|⍥°CImpl=0⊸type)
+  # Track caller!
+  Coords ← ⌅(⍥CImpl=3⊸type ⊸CoordError|⍥°CImpl=0⊸type ⊸CoordError)
 
   Grid ← ˜ℂ⊢₂°⍉°⊡
 └─╴
@@ -60,7 +68,7 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
   Clear ← [0 0 0 0]
 
   # Convert a color from 8-bit rgb to Uiua colors
-  # 
+  #
   # Uiua color channels are represented by values `0-1`, while standard graphics uses integers from `0-255`.
   # Colors are rounded to four decimal places so that they display nicely (this will not affect their 8-bit value.)
   # `°Rgb` converts a Uiua color back to an 8-bit color.
@@ -72,7 +80,7 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
   HexImpl     ↚ Rgb ⌝⊥16°⌅≡⬚0↙₂ ≡⇌ ⌅(↯∞_2|♭) ˜⊗HexDigits ⌅(⍣⌝⊂◌@#|⊂@#)
 
   # Convert a hexadecimal string into a color
-  # 
+  #
   # Expects a string in the form `#RRGGBB` where all the letters are hexadecimal digits corresponding to color channels.
   # The leading `#` can be omitted, and and alpha channel can also be specified at the end.
   # This function is pervasive, and will convert an array of strings, or an array of box strings into an array of colors.
@@ -82,7 +90,7 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
   Hex ← FillOpacity (⌅(≡₀^0|≡₁°^0))!⍜°□HexImpl BoxStrings ⌅(¯⌵)
 
   # Get the alpha channel (transparency) of an image
-  # 
+  #
   # If `Alpha` is called on an image without an alpha channel, a fully opaque one will be added.
   # `⍜Alpha` edits the alpha channel, and `°⊸Alpha` can be used to set it.
   # For either inverse if a scalar is provided the entire alpha channel will be set to it.
@@ -93,7 +101,7 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
 
 ┌─╴Screen
   # Check if the screen is fullscreen
-  # 
+  #
   # `Full` returns a boolean to tell if the screen is in fullscreen mode.
   # `°Full` can be passed a boolean to set the state of fullscreen mode.
   # A common pattern to toggle fullscreen is `⍜Full¬`.
@@ -104,7 +112,7 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
     ⍥Rayua~ToggleFullscreen≠Rayua~IsWindowFullscreen)
 
   # The size of the screen
-  # 
+  #
   # The dimensions returned are in pixels.
   # `°Size` sets the size of the screen.
   # If the screen is in fullscreen mode when `°Size` is called, fullscreen mode with be turned off.
@@ -120,7 +128,7 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
   FullSize ← (°T~Coords⊟ Rayua!⊃GetMonitorWidth GetMonitorHeight Rayua~GetCurrentMonitor)
 
   # The active FPS (framerate)
-  # 
+  #
   # `FPS` returns the actual framerate, which varies based on how long your device takes to run a frame.
   # `°FPS` sets the maximum FPS. By default, the FPS is unbounded, and frames will be run as fast as possible.
   # `FPS` can take `∞` to have the fastest possible framerate (the default behavior.)
@@ -131,13 +139,15 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
     Rayua~SetTargetFPS)
 └─╴
 
-IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
+ColorArg ← ≡₁□ ToRayColor
+SizeArg  ← ≡₁□ ⍥˙⊟=0⧻⊸△ T~Coords
+PosArg   ← ≡₁□ T~Coords
 
 ┌─╴Texture
   ≁Data {Buffer ColorFormat}
 
   # Unload a texture, freeing it's memory
-  # 
+  #
   # Once a texture is unloaded, attempting to draw it will result in an all-black texture.
   # Calling this function multiple times on a texture will not doing anything.
   # ? Texture
@@ -148,7 +158,7 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
   Size ← ℂ≡₁(Rayua~Texture!⊃Width Height Data~Buffer)
 
   # Load a texture from a filepath
-  # 
+  #
   # The file must contain an image, and have the proper extension for the image format.
   # The color format of a texture created this way is always color with an alpha channel.
   # `⍜LoadFile` will load the texture, and then free the memory when the function is over.
@@ -176,7 +186,7 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
   )⋅◌ ◡(×˜∩≍ ImageAndTextureData)
 
   # Get the image in a texture without unloading the texture
-  # 
+  #
   # `Image` remembers the color format of the image you made the texture with. If you provided a grayscale, you will get back a grayscale.
   # `°⊸Image` edits the image in a texture. It takes the new image as the first argument and the texture as the second argument.
   # `⍜Image` gets the image, allows you to change it, and then puts the new image back in the texture.
@@ -188,7 +198,7 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
   | ⟜(Rayua~UpdateTexture Data~Buffer)⊙(♭ ToRayColor ToFullColor) ◡˜ImageError)
 
   # Load a texture from a Uiua image array
-  # 
+  #
   # The provided image can be in any color format a Uiua image can be in, except for complex domain coloring.
   # The formats are defined [in the Uiua tutorial.](https://www.uiua.org/tutorial/images)
   # The format you use to create the texture is the only one that may be used by the texture.
@@ -200,101 +210,75 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
   | Unload⟜Image
   | Unload)
 
-  FillColor ↚ (≡₁□ ToRayColor ⍣(⊸IsColor °◌|White))
-
-  # Draw a loaded texture onto the screen
-  # Provide a fill to draw with a color
-  # ? Texture Size Position
-  Draw ← (
-    ⊙(⍥(↯2)≍[]⊸△ T~Coords)
-    ⊓(≡₁⊃□(□⊂0_0 T~Coords Size)|˜≡₀⍚⊂ ∩(≡₁□T~Coords))
-    ≡₀◇(Rayua~DrawTexturePro Data~Buffer)⊙⊙⊙(□0_0 0 FillColor)
+  # Draw a texture on the screen
+  #
+  # `Color` tints a texture a particular color.
+  # `Angle` is given in rotations `[0,1]`, clockwise.
+  # Optional args: Color Angle Centered
+  # ? Texture Size Pos
+  ~Draw {Color ← White|Angle ← 0|Centered ← 0} (
+    ⊃(Color|Angle|⋅∘|Centered)
+    ⊓(ColorArg | ×360◿1 | ≡₁⊃(□Data~Buffer|□⊂0_0⊟°ℂSize)
+    | ⊃(≡₀⍚⊂ ⍥(+◡⋅÷₂)¬|⋅⋅÷₂) ⊙˜⊓PosArg SizeArg)
+    ≡₀◇Rayua~DrawTexturePro S!cdefba
   )
-
-  # Like `Draw`, but the size is relative to the texture file
-  # ? Texture Scale Position
-  DrawScaled ← Draw ⟜(≡₀°□ × ≡₁(□Size))
 
   # Draw a texture covering the whole screen.
-  # 
+  #
   # The texture will be stretched/scaled to properly fit the size of the screen.
+  # `DrawScreen` also supports a `Color` arg, like `Draw`
+  # Optional args: Color
   # ? Texture
-  DrawScreen ← Draw⊙(Screen~Size 0_0)
-
-  # Draw a portion of a texture onto the screen
-  # 
-  # This function takes two rectangles. The first is the section of the texture to draw, and the second is where to draw it.
-  # The next parameters are to rotate the To rectangle at some Angle, centered around an Origin.
-  # Provide a fill to draw with a color
-  # ? Texture From To Origin Angle
-  Map ← (
-    ⊓(≡₁□|∩(≡₂(□♭)T~Coords)|≡₁□T~Coords|×360|FillColor)
-    ≡₀◇(Rayua~DrawTexturePro Data~Buffer)
-  )
+  ~DrawScreen [Color ← White] Draw ⊙(Screen~Size 1_1) Color:Color
 └─╴
 
 # Draw different shapes onto the screen
 ┌─╴Draw
   # Fill the whole screen with a color
   # ? Color
-  Background ← Rayua~ClearBackground ToRayColor
+  Background ← Rayua~ClearBackground ⍤"Background only takes a single color"≍[4]⊸△ ToRayColor
 
   # Draw a line on the screen
-  # 
+  #
   # A line will draw from point A to point B, even if either are off-screen.
-  # A thickness of zero will cause the lines not to draw at all.
+  # A thickness of zero will cause the line not to draw at all.
   # ? Color Thickness A B
-  Line ← (
-    ⊓(≡₁□ToRayColor|↥0⌈|∩(≡₁□T~Coords))
-    ≡₀◇Rayua~DrawLineEx ⤚⋅⤚⋅⊙∘
-  )
+  Line ← ≡₀◇Rayua~DrawLineEx S!cdba ⊓(ColorArg|↥₀⌈|∩PosArg)
 
   # Draw a circle on the screen
+  #
+  # An angle and a starting position can be supplied to draw a sector of the circle.
+  # `Angle` can have the range `[-1,1]` where positive is clockwise.
+  # `Start` can have the range `[0,1]` where `0` is upward also moving clockwise.
+  # Optional args: Angle Start
   # ? Color Radius Center
-  Circle ← ≡₀◇Rayua~DrawCircle ⤚⋅: ⊓(≡₁□ToRayColor|∘|≡₁□T~Coords)
-
-  # Draw a sector of a circle on the screen
-  # The two angles (Start and Angle) are given in rotations 0-1
-  # 0 is the top of the screen
-  # ? Color Radius Start Angle Center 
-  Sector ← (
-    ⊓(≡₁□ToRayColor|∘|∩(-90×360) ⟜+ ⊙⟜(×32)|≡₁□T~Coords)
-    ≡₀◇Rayua~DrawCircleSector ⤚⋅⤙⊙⊙⊙⊙◌
+  ~Circle {Angle ← 1|Start ← 0} (
+    ⊃Angle Start
+    ≍1⟜(⌈×32|∩(-90×360) ⊸+) ⊓(⍜⌵↧₁|◿₁|ColorArg|↥₀⌈|PosArg) # B Segments End Start Color Radius Center ?
+    ⨬(≡₀◇Rayua~DrawCircleSector S!fecbad|≡₀◇Rayua~DrawCircle S!fed)
   )
-
-  Text! ↚ ≡₀◇^0 ⤚⋅⤚⋅: ⊓(≡₁□ToRayColor|∘|≡₁□T~Coords|≡₀⍚$"_"BoxStrings)
 
   # Print text to the screen
   # ? Color Size Position Text
-  Text ← Text!Rayua~DrawText
+  ~Text [Centered ← 0] (
+    Centered ⊙(S!dcba ⊓(ColorArg|∘|PosArg|≡₀⍚$"_"BoxStrings))
+    ≡₀◇Rayua~DrawText ⍥≡₀⍚(⊃⋅∘(-⊙⋅∘) ◡(÷₂⊟⊸Rayua~MeasureText ⊙⋅∘))
+  )
 
   # Draw a rectangle on the screen
+  #
+  # Optional args: Centered
   # ? Color Size Position
-  Rect ← ≡₀◇Rayua~DrawRectangle ⤚⋅: ⊓(≡₁□ToRayColor|∩(≡₁□T~Coords))
+  ~Rect [Centered ← 0] ≡₀◇Rayua~DrawRectangle S!bca ⊓(ColorArg|⍥(-◡⋅÷₂) ⊙˜⊓PosArg SizeArg) ⊃⋅∘Centered
 
   # Draw a square on the screen
+  #
+  # Exactly like `Rect`, except that the size is a scalar instead of a vector
+  # Optional args: Centered
   # ? Color Size Position
-  Square ← Rect ⊙≡₀(↯2)
+  ~Square [Centered ← 0] Rect ⊙(⍉↯2) Centered:Centered
 
   Texture ← Texture~Draw
-
-  ┌─╴Centered
-    # Print horizontally centered text to the screen
-    # ? Color Size Position Text
-    Text ← Text!Rayua~DrawTextCentered
-
-    # Draw a centered rectangle on the screen
-    # ? Color Size Position
-    Rect ← Draw~Rect⊙⟜(-÷₂∩°T~Coords)
-
-    # Draw a centered square on the screen
-    # ? Color Size Position
-    Square ← Rect ⊙(ℂ.)
-
-    Circle ← Draw~Circle
-
-    Texture ← Draw~Texture ⊙⟜(-÷₂∩T!°Coords)
-  └─╴
 └─╴
 
 ┌─╴Key
@@ -368,7 +352,7 @@ IsColor ↚ ⊃(⍤.∊3_4⊣△|°0type)
   # Returns array of direction constants for arrow keys pressed
   # Takes a boolean to choose between keypress and keydown
   # Direction ? Pressed
-  UDLR ← Impl⊙(Arrow "^v<>")
+  ULDR ← Impl⊙(Arrow "^<v>")
 └─╴
 
 ┌─╴Mouse
