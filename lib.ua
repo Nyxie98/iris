@@ -259,7 +259,7 @@ PosArg   ↚ ≡₁□ T~Coords
   )
 
   # ? Font Size
-  LoadFont ↚ ⨬(memo(Rayua~LoadFontEx⊙⊙[])|Rayua~GetFontDefault)⊸≍∞ ⊙⌈₋₁
+  LoadFont ↚ ⨬(memo(Rayua~LoadFontEx⊙⊙[])|Rayua~GetFontDefault)⊸≍∞ ⊙(↥₅ ⍥⁅₋₁ ⊸>₁₀₀)
 
   # Print text to the screen
   #
@@ -270,8 +270,7 @@ PosArg   ↚ ≡₁□ T~Coords
   # ? Color Size Position Text
   ~Text {Centered ← 0|Font ← ∞|Spacing ← 0} (
     ⊃(Centered|Font|Spacing)
-    ⊙(
-      ⊓(□|∘|ColorArg|↥₀|PosArg|≡₀⍚$"_"BoxStrings)
+    ⊙(⊓(□|∘|ColorArg|↥₀|PosArg|≡₀⍚$"_"BoxStrings)
       S!afedbc ≡₀⍚LoadFont⊙⤙⊙⊙∘ ⟜(⍥⋅◡⋅÷₁₀◇≍∞)
     ) # Centered Font Text Pos Size Spacing Color ?
     ⍥≡₀⍚(⍜⊙⋅⋅∘- ◡(÷₂Rayua~MeasureTextEx⊙⊙⋅⊙∘))
