@@ -268,11 +268,11 @@ PosArg   ↚ ≡₁□ T~Coords
   # `Centered` centers the text both horizontally and vertically.
   # Optional args: Font Spacing Centered
   # ? Color Size Position Text
-  ~Text {Centered ← 0|Font ← ∞|Spacing ← ∞} (
+  ~Text {Centered ← 0|Font ← ∞|Spacing ← 0} (
     ⊃(Centered|Font|Spacing)
     ⊙(
       ⊓(□|∘|ColorArg|↥₀|PosArg|≡₀⍚$"_"BoxStrings)
-      S!afedbc ≡₀⍚LoadFont⊙⤙⊙⊙∘ ⊙(⍥⋅◡⋅÷₁₀⊸≍∞)
+      S!afedbc ≡₀⍚LoadFont⊙⤙⊙⊙∘ ⟜(⍥⋅◡⋅÷₁₀◇≍∞)
     ) # Centered Font Text Pos Size Spacing Color ?
     ⍥≡₀⍚(⍜⊙⋅⋅∘- ◡(÷₂Rayua~MeasureTextEx⊙⊙⋅⊙∘))
     ≡₀◇Rayua~DrawTextEx
