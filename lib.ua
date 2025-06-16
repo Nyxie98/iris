@@ -139,9 +139,9 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
     Rayua~SetTargetFPS)
 └─╴
 
-ColorArg ← ≡₁□ ToRayColor
-SizeArg  ← ≡₁□ ⍥˙⊟=0⧻⊸△ T~Coords
-PosArg   ← ≡₁□ T~Coords
+ColorArg ↚ ≡₁□ ToRayColor
+SizeArg  ↚ ≡₁□ ⍥˙⊟=0⧻⊸△ T~Coords
+PosArg   ↚ ≡₁□ T~Coords
 
 ┌─╴Texture
   ≁Data {Buffer ColorFormat}
@@ -258,11 +258,24 @@ PosArg   ← ≡₁□ T~Coords
     ⨬(≡₀◇Rayua~DrawCircleSector S!fecbad|≡₀◇Rayua~DrawCircle S!fed)
   )
 
+  # ? Font Size
+  LoadFont ↚ ⨬(memo(Rayua~LoadFontEx⊙⊙[])|Rayua~GetFontDefault)⊸≍∞ ⊙⌈₋₁
+
   # Print text to the screen
+  #
+  # `Font` is a filepath pointing to a font file. If not specified, the Raylib font is used.
+  # `Spacing` changes how far apart characters are placed from eachother. By default it is 10% of the fontsize.
+  # `Centered` centers the text both horizontally and vertically.
+  # Optional args: Font Spacing Centered
   # ? Color Size Position Text
-  ~Text [Centered ← 0] (
-    Centered ⊙(S!dcba ⊓(ColorArg|∘|PosArg|≡₀⍚$"_"BoxStrings))
-    ≡₀◇Rayua~DrawText ⍥≡₀⍚(⊃⋅∘(-⊙⋅∘) ◡(÷₂⊟⊸Rayua~MeasureText ⊙⋅∘))
+  ~Text {Centered ← 0|Font ← ∞|Spacing ← ∞} (
+    ⊃(Centered|Font|Spacing)
+    ⊙(
+      ⊓(□|∘|ColorArg|↥₀|PosArg|≡₀⍚$"_"BoxStrings)
+      S!afedbc ≡₀⍚LoadFont⊙⤙⊙⊙∘ ⊙(⍥⋅◡⋅÷₁₀⊸≍∞)
+    ) # Centered Font Text Pos Size Spacing Color ?
+    ⍥≡₀⍚(⍜⊙⋅⋅∘- ◡(÷₂Rayua~MeasureTextEx⊙⊙⋅⊙∘))
+    ≡₀◇Rayua~DrawTextEx
   )
 
   # Draw a rectangle on the screen
@@ -423,10 +436,6 @@ Open ← Rayua~InitWindow ⊓(°⊟ ⍥(↯2)≍[]⊸△ T~Coords|$"_") Rayua~Se
 
 # Sets the trace log to `DEBUG`, printing extra information about what Raylib is doing
 Debug ← Rayua~SetTraceLogLevel Rayua~TraceLogLevel~Debug
-
-# Number of seconds since the screen opened
-# Seconds ? 
-Time ← (Rayua~GetTime)
 
 # Delta-time since last frame in seconds
 Dt ← (Rayua~GetFrameTime)
