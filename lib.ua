@@ -273,15 +273,14 @@ PosArg   ↚ ≡₁□ T~Coords
     ⊙(⊓(□|∘|ColorArg|↥₀|PosArg|≡₀⍚$"_"BoxStrings)
       S!afedbc ≡₀⍚LoadFont⊙⤙⊙⊙∘ ⟜(⍥⋅◡⋅÷₁₀◇≍∞)
     ) # Centered Font Text Pos Size Spacing Color ?
-    ⍥≡₀⍚(⍜⊙⋅⋅∘- ◡(÷₂Rayua~MeasureTextEx⊙⊙⋅⊙∘))
-    ≡₀◇Rayua~DrawTextEx
+    ≡₀◇(Rayua~DrawTextEx⍥(⍜⊙⋅⋅∘- ◡(÷₂Rayua~MeasureTextEx⊙⊙⋅⊙∘)))
   )
 
   # Draw a rectangle on the screen
   #
   # Optional args: Centered
   # ? Color Size Position
-  ~Rect [Centered ← 0] ≡₀◇Rayua~DrawRectangle S!bca ⊓(ColorArg|⍥(-◡⋅÷₂) ⊙˜⊓PosArg SizeArg) ⊃⋅∘Centered
+  ~Rect [Centered ← 0] ≡₀◇Rayua~DrawRectangle S!bca ⊓(ColorArg|⍥(≡₀⍚-◡⋅÷₂) ⊙˜⊓PosArg SizeArg) ⊃⋅∘Centered # TODO: Change back once pervasion is fixed
 
   # Draw a square on the screen
   #
