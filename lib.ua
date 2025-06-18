@@ -99,10 +99,10 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
   Alpha ← ⊣°⍉ ⌅(⨬(⍉˜⊂1|⍜°⍉⬚1↙₄|∘|∘)⊸ColorFormat)
 └─╴
 
-┌─╴Screen
-  # Check if the screen is fullscreen
+┌─╴Window
+  # Check if the window is fullscreen
   #
-  # `Full` returns a boolean to tell if the screen is in fullscreen mode.
+  # `Full` returns a boolean to tell if the window is in fullscreen mode.
   # `°Full` can be passed a boolean to set the state of fullscreen mode.
   # A common pattern to toggle fullscreen is `⍜Full¬`.
   # Track caller!
@@ -111,20 +111,20 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
   | ⍥⊸(˜⍤$"Fullscreen state must be a boolean, but it is _"F)¬≍1⊸∊0_1
     ⍥Rayua~ToggleFullscreen≠Rayua~IsWindowFullscreen)
 
-  # The size of the screen
+  # The size of the window
   #
   # The dimensions returned are in pixels.
-  # `°Size` sets the size of the screen.
-  # If the screen is in fullscreen mode when `°Size` is called, fullscreen mode with be turned off.
-  # Neither dimension of the screen can be zero.
+  # `°Size` sets the size of the window.
+  # If the window is in fullscreen mode when `°Size` is called, fullscreen mode with be turned off.
+  # Neither dimension of the window can be zero.
   # If a single number is given as the dimensions, it will be used as both the width and the height.
   # Track caller!
   Size ← (°T~Coords ⌅(
       Os‼macos÷₂ ⊟Rayua~GetRenderWidth Rayua~GetRenderHeight
-    | ⍥⊸(˜⍤0$"Screen size must be greater than zero, but it is _"F) ¬×⊸⊃(≍1/×>0|≍[2]△) ⌈ ⍥(↯2)≍[]⊸△ °Full 0
+    | ⍥⊸(˜⍤0$"Window size must be greater than zero, but it is _"F) ¬×⊸⊃(≍1/×>0|≍[2]△) ⌈ ⍥(↯2)≍[]⊸△ °Full 0
       Rayua~SetWindowSize °⊟))
 
-  # Get the size of the screen when it is fullscreen
+  # Get the size of the window when it is fullscreen
   FullSize ← (°T~Coords⊟ Rayua!⊃GetMonitorWidth GetMonitorHeight Rayua~GetCurrentMonitor)
 
   # The active FPS (framerate)
@@ -137,6 +137,21 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
     Rayua~GetFPS
   | ⍥⊸(˜⍤0$"FPS must be greater than zero, but it is _"F)¬×⊸⊃(>0|≍[]△) ⌈
     Rayua~SetTargetFPS)
+└─╴
+
+# Deprecated!
+Screen ← Window
+
+┌─╴Sound
+  ≁Data {Buffer Clone}
+
+  # Unload a sound, freeing it's memory
+  Unload ← ≡₁(Rayua~UnloadSound ⍤"Cannot free an active sound, only a source sound." Data!⊃Clone Buffer)
+
+  # ActiveSound ? SourceSound
+  Play ← Data⊙1 ⊸Rayua~PlaySound Rayua~LoadSoundAlias Data~Buffer
+
+  Start ← ⍜Data~Buffer⊸Rayua~PlaySound
 └─╴
 
 ColorArg ↚ ≡₁□ ToRayColor
@@ -210,7 +225,7 @@ PosArg   ↚ ≡₁□ T~Coords
   | Unload⟜Image
   | Unload)
 
-  # Draw a texture on the screen
+  # Draw a texture on the window
   #
   # `Color` tints a texture a particular color.
   # `Angle` is given in rotations `[0,1]`, clockwise.
@@ -223,29 +238,29 @@ PosArg   ↚ ≡₁□ T~Coords
     ≡₀◇Rayua~DrawTexturePro S!cdefba
   )
 
-  # Draw a texture covering the whole screen.
+  # Draw a texture covering the whole window.
   #
-  # The texture will be stretched/scaled to properly fit the size of the screen.
+  # The texture will be stretched/scaled to properly fit the size of the window.
   # `DrawScreen` also supports a `Color` arg, like `Draw`
   # Optional args: Color
   # ? Texture
-  ~DrawScreen [Color ← White] Draw ⊙(Screen~Size 1_1) Color:Color
+  ~DrawScreen [Color ← White] Draw ⊙(Window~Size 1_1) Color:Color
 └─╴
 
-# Draw different shapes onto the screen
+# Draw different shapes onto the window
 ┌─╴Draw
-  # Fill the whole screen with a color
+  # Fill the whole window with a color
   # ? Color
   Background ← Rayua~ClearBackground ⍤"Background only takes a single color"≍[4]⊸△ ToRayColor
 
-  # Draw a line on the screen
+  # Draw a line on the window
   #
-  # A line will draw from point A to point B, even if either are off-screen.
+  # A line will draw from point A to point B, even if either are outside the window.
   # A thickness of zero will cause the line not to draw at all.
   # ? Color Thickness A B
   Line ← ≡₀◇Rayua~DrawLineEx S!cdba ⊓(ColorArg|↥₀⌈|∩PosArg)
 
-  # Draw a circle on the screen
+  # Draw a circle on the window
   #
   # An angle and a starting position can be supplied to draw a sector of the circle.
   # `Angle` can have the range `[-1,1]` where positive is clockwise.
@@ -261,7 +276,7 @@ PosArg   ↚ ≡₁□ T~Coords
   # ? Font Size
   LoadFont ↚ ⨬(memo(Rayua~LoadFontEx⊙⊙[])|Rayua~GetFontDefault)⊸≍∞ ⊙(↥₅ ⍥⁅₋₁ ⊸>₁₀₀)
 
-  # Print text to the screen
+  # Print text to the window
   #
   # `Font` is a filepath pointing to a font file. If not specified, the Raylib font is used.
   # `Spacing` changes how far apart characters are placed from eachother. By default it is 10% of the fontsize.
@@ -276,13 +291,13 @@ PosArg   ↚ ≡₁□ T~Coords
     ≡₀◇(Rayua~DrawTextEx⍥(⍜⊙⋅⋅∘- ◡(÷₂Rayua~MeasureTextEx⊙⊙⋅⊙∘)))
   )
 
-  # Draw a rectangle on the screen
+  # Draw a rectangle on the window
   #
   # Optional args: Centered
   # ? Color Size Position
   ~Rect [Centered ← 0] ≡₀◇Rayua~DrawRectangle S!bca ⊓(ColorArg|⍥(≡₀⍚-◡⋅÷₂) ⊙˜⊓PosArg SizeArg) ⊃⋅∘Centered # TODO: Change back once pervasion is fixed
 
-  # Draw a square on the screen
+  # Draw a square on the window
   #
   # Exactly like `Rect`, except that the size is a scalar instead of a vector
   # Optional args: Centered
@@ -424,11 +439,14 @@ PosArg   ↚ ≡₁□ T~Coords
   # ? Button Function
   Down‼ ← ⍥(^1 Pos)Down ^0
 
-  # Check if the mouse is on the screen
-  OnScreen ← (Rayua~IsCursorOnScreen)
+  # Check if the mouse is on the window
+  OnWindow ← (Rayua~IsCursorOnScreen)
+
+  # Deprecated!
+  OnScreen ← (OnWindow)
 └─╴
 
-# Open a new screen with a title
+# Open a new window with a title
 # ? Size Title
 Open ← Rayua~InitWindow ⊓(°⊟ ⍥(↯2)≍[]⊸△ T~Coords|$"_") Rayua~SetTraceLogLevel Rayua~TraceLogLevel~Warning
 
