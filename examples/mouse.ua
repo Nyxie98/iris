@@ -11,7 +11,7 @@ DrawCursor ← (
 DrawTrail ← I~Draw~Line Red 5 ⧈⊙∘
 
 I~Open 640_480 "Iris mouse example"
-I~Screen!°FPS 60 # Set the FPS with °FPS
+I~Window!°FPS 60 # Set the FPS with °FPS
 
 [] # trail path
 

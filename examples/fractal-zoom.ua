@@ -20,7 +20,7 @@ I~Loop!(
   ⍥⊸(◌°⊸I~Texture~Image⊙Fractal Render)⊸(¬≍)
   I~Texture~DrawScreen Fractal
   ⍥(
-    ⊸{⊃($"FPS: _" I~Screen~FPS
+    ⊸{⊃($"FPS: _" I~Window~FPS
       | $"Center: _" $"_ + _i" °˜ℂ Center
       | $"Width: _" ×₂Radius
       | $"Iters: _" Iters
