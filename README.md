@@ -47,7 +47,7 @@ work. It also means that you can use the
 
 <!--[Function Docs](https://marcos-cat.github.io/iris/)-->
 
-[Examples](https://github.com/Marcos-cat/iris-examples)
+[Examples](./examples/)
 
 ## Projects in Iris
 
