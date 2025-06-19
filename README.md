@@ -2,7 +2,8 @@
 
 *A simple game library around [Rayua](https://github.com/uiua-lang/rayua)*
 
-[Getting Started](./docs/getting-started.md)
+- [Getting Started](./docs/getting-started.md)
+- [Docs](https://marcos-cat.github.io/iris/)
 
 ```uiua
 # Experimental!
