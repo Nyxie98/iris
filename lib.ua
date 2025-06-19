@@ -104,6 +104,28 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
   # `0` is fully transparent and `1` is fully opaque.
   # Track caller!
   Alpha ← ⊣°⍉ ⌅(⨬(⍉˜⊂1|⍜°⍉⬚1↙₄|∘|∘)⊸ColorFormat)
+
+  Rosewater ← Hex "#f5e0dc"
+  Flamingo  ← Hex "#f2cdcd"
+  Pink      ← Hex "#f5c2e7"
+  Mauve     ← Hex "#cba6f7"
+  Red       ← Hex "#f38ba8"
+  Maroon    ← Hex "#eba0ac"
+  Peach     ← Hex "#fab387"
+  Yellow    ← Hex "#f9e2af"
+  Green     ← Hex "#a6e3a1"
+  Teal      ← Hex "#94e2d5"
+  Sky       ← Hex "#89dceb"
+  Sapphire  ← Hex "#74c7ec"
+  Blue      ← Hex "#89b4fa"
+  Lavender  ← Hex "#b4befe"
+  Text      ← Hex "#cdd6f4"
+  Subtext   ← ˜⊏Hex "#a6adc8"_"#bac2de"
+  Overlay   ← ˜⊏Hex "#6c7086"_"#7f849c"_"#9399b2"
+  Surface   ← ˜⊏Hex "#313244"_"#45475a"_"#585b70"
+  Base      ← Hex "#1e1e2e"
+  Mantle    ← Hex "#181825"
+  Crust     ← Hex "#11111b"
 └─╴
 
 ┌─╴Window
