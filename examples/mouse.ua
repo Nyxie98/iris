@@ -16,7 +16,7 @@ I~Window!°FPS 60 # Set the FPS with °FPS
 [] # trail path
 
 I~Loop!(
-  I~Draw~Background 0.4_0.7_1 # Skyblue
+  I~Draw~Background "#87CEEB" # Skyblue
   # Add mouse position to the trail
   ⬚0↙20 ⊂I~Mouse~Pos
   ⊸⊃(DrawTrail|DrawCursor⊢)

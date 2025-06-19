@@ -1,7 +1,6 @@
 # Experimental!
 Rayua ~ "git: github.com/uiua-lang/rayua"
 
-ToRayColor ↚ ⌅(⍥(⍜°⍉⬚255↙₄)⊸(=3⊣△) ⁅) ×255
 BoxStrings ↚ ⌅(⍥≡₁□=1⊸type|≡₀°□)
 F          ↚ ⍥(⊂@\n)>1⊃⧻/$"_\n_"pretty
 Os‼        ↚^ ▽≍os°□₂
@@ -74,10 +73,7 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
   # `°Rgb` converts a Uiua color back to an 8-bit color.
   # Both `Rgb` and `°Rgb` clamp the values to be within the correct ranges.
   # UiuaColor ? RgbColor
-  Rgb ← ⌅(↥0↧1⁅₄) ÷255 °⌅(↥0↧255⁅)
-
-  FillOpacity ↚ (⌅(^0|^0))!⬚1≡₀°□
-  HexImpl     ↚ Rgb ⌝⊥16°⌅≡⬚0↙₂ ≡⇌ ⌅(↯∞_2|♭) ˜⊗HexDigits ⌅(⍣⌝⊂◌@#|⊂@#)
+  Rgb ← ⌅(↥0↧1⁅₃) ÷255 °⌅(↥0↧255⁅)
 
   # Convert a hexadecimal string into a color
   #
@@ -87,7 +83,18 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
   # The output will always be non-box, so if a single string has an alpha channel, all of the output will.
   # `°Hex` converts a color back into a hexidecimal string, always including the `#`.
   # Color ? HexString
-  Hex ← FillOpacity (⌅(≡₀^0|≡₁°^0))!⍜°□HexImpl BoxStrings ⌅(¯⌵)
+  # Track caller!
+  Hex ← (⌅(
+      ⨬(⬚1≡₀◇^0|≡₁^0)=1⊸type ¯⌵
+    | ⨬(⬚@f≡₀◇°^0|≡₁^0)=0⊸type))!(
+    ⌅(⍣⌝⊂◌@#|⊂@#)
+    ⌅(⍤"Hex string must be characters"=1⊸type
+      ⍤"Hex string must have 6 or 8 characters"∊[6]_[8]⊸△)
+    ⌅(⍤"Hex string has invalid characters"¬⊸˜∊∞) ⬚∞˜⊗HexDigits
+    Rgb ⌝⊥16°⌅≡⬚0↙₂ ≡⇌ ⌅(↯∞_2|♭)
+    °⌅(⍤"Color must be numbers"=0⊸type
+       ⍤"Color must be 3 or 4 digits"∊[3]_[4]⊸△)
+  )
 
   # Get the alpha channel (transparency) of an image
   #
@@ -154,9 +161,15 @@ Screen ← Window
   Start ← ⍜Data~Buffer⊸Rayua~PlaySound
 └─╴
 
-ColorArg ↚ ≡₁□ ToRayColor
-SizeArg  ↚ ≡₁□ ⍥˙⊟=0⧻⊸△ T~Coords
-PosArg   ↚ ≡₁□ T~Coords
+ColorArg ↚ |1 ≡₁□ ⨬(
+  °Color~Rgb ⍤"Color must have 3 or 4 channels"=4⬚0⊣⊸△ ⍥⍜°⍉⬚1↙₄=3⬚0⊣⊸△
+| °Color~Rgb ⍥⍜°⍉⬚1↙₄=3⊣⊸△ Color~Hex
+| ⬚255≡₀◇ColorArg
+| ⍤"Color cannot be complex"0
+) ⊸type
+# ColorArg ↚ ≡₁□ ToRayColor
+SizeArg ↚ ≡₁□ ⍥˙⊟=0⧻⊸△ T~Coords
+PosArg  ↚ ≡₁□ T~Coords
 
 IsTexture ↚ ≍□"texture"⬚∞⊣
 
@@ -193,8 +206,8 @@ IsTexture ↚ ≍□"texture"⬚∞⊣
   ReadImageData ↚ ↯⤙(&memcpy"unsigned char"⊙/×) Rayua~Image!(Data⟜[⊃Height Width⊙4]) Data~Buffer
 
   ToRayImage ↚ ⌅(
-    Data ⊃(Rayua~Image ⊃(♭ ToRayColor ToFullColor|°⊟⇌△₂|1 7)|ColorFormat)
-  | Rayua~UnloadImage Data~Buffer⟜(ToFormat|°ToRayColor ReadImageData))
+    Data ⊃(Rayua~Image ⊃(♭ °Color~Rgb ToFullColor|°⊟⇌△₂|1 7)|ColorFormat)
+  | Rayua~UnloadImage Data~Buffer⟜(ToFormat|Color~Rgb ReadImageData))
 
   ImageAndTextureData ↚ ⊓(⊃(⇌△₂) ColorFormat|⊃(⊟°ℂSize) Data~ColorFormat)
   ImageError ↚ ⨬(
@@ -212,7 +225,7 @@ IsTexture ↚ ≍□"texture"⬚∞⊣
   # Track caller!
   Image ← (⌅(^0|⟜^0|^1))!(
     °ToRayImage ⍜Data~Buffer Rayua~LoadImageFromTexture
-  | ⟜(Rayua~UpdateTexture Data~Buffer)⊙(♭ ToRayColor ToFullColor) ◡˜ImageError)
+  | ⟜(Rayua~UpdateTexture Data~Buffer)⊙(♭ °Color~Rgb ToFullColor) ◡˜ImageError)
 
   # Load a texture from a Uiua image array
   #
@@ -259,9 +272,10 @@ IsTexture ↚ ≍□"texture"⬚∞⊣
   # When given a color, `Background` covers the whole window with that color.
   # When given a texture `Background` scales the texture to fit over the whole window.
   # ? Background
+  # Track caller!
   Background ← (
     ⊸IsTexture
-    ⨬(Rayua~ClearBackground ⍤"Background only takes a single color or a texture"≍[4]⊸△ ColorArg
+    ⨬(Rayua~ClearBackground ⍤"Background does not take multiple colors"≍[4]⊸△ °□ ColorArg
     | Texture~Draw⊙(Window~Size 0_0))
   )
 
