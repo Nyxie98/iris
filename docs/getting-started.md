@@ -12,15 +12,23 @@ the top.
 
 ```uiua
 # Experimental!
-I ~ "git: github.com/Marcos-cat/iris" ~ Draw
+I ~ "git: github.com/Marcos-cat/iris"
 
 I~Open 500_500 "The Title"
 
 I~Loop!(
-  Draw~Background Purple
+  I~Draw~Background Purple
 )
 ```
 
 To verify your installation is working properly, run `uiua run main.ua` and make
-sure no errors appear. If you still get errors, you can feel free to troubleshoot in
-the [Uiua Discord server](https://discord.com/invite/3r9nrfYhCc).
+sure no errors appear. If you still get errors, you can feel free to
+troubleshoot in the
+[Uiua Discord server](https://discord.com/invite/3r9nrfYhCc).
+
+## Where Next
+
+If you want to learn the basics of how Iris operates, continue onto
+[the tutorial](./basics.md), or skip to a particular section.
+
+<!--TODO: Say list what is next -->
