@@ -456,4 +456,10 @@ Debug ← Rayua~SetTraceLogLevel Rayua~TraceLogLevel~Debug
 # Delta-time since last frame in seconds
 Dt ← (Rayua~GetFrameTime)
 
-Loop! ← Rayua~CloseWindow ⍢(Rayua~EndDrawing ^0 Rayua~BeginDrawing|¬Rayua~WindowShouldClose)
+# ? Conditional Body
+Loop‼ ← Rayua~CloseWindow ⍢(
+  Rayua~EndDrawing ^1 Rayua~BeginDrawing
+| ×¬Rayua~WindowShouldClose ^0)
+
+# ? Body
+Loop! ← Loop‼1^0
