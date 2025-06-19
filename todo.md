@@ -2,7 +2,7 @@
 - [ ] Add audio support
 - [ ] Prevent all use-after-frees
 - [x] Rename screen to window
-- [ ] Merge DrawScreen into Background
+- [x] Merge DrawScreen into Background
 - [ ] Have ColorArg support hex
 - [ ] uiua-doc-gen support optional args and privates
 - [x] Loop takes conditional to end the loop

@@ -18,7 +18,7 @@ I~Loop!(
     I~Key~Pressed‼@r ⋅Start
   )
   ⍥⊸(◌°⊸I~Texture~Image⊙Fractal Render)⊸(¬≍)
-  I~Texture~DrawScreen Fractal
+  I~Draw~Background Fractal
   ⍥(
     ⊸{⊃($"FPS: _" I~Window~FPS
       | $"Center: _" $"_ + _i" °˜ℂ Center

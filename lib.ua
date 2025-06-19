@@ -158,8 +158,10 @@ ColorArg ↚ ≡₁□ ToRayColor
 SizeArg  ↚ ≡₁□ ⍥˙⊟=0⧻⊸△ T~Coords
 PosArg   ↚ ≡₁□ T~Coords
 
+IsTexture ↚ ≍□"texture"⬚∞⊣
+
 ┌─╴Texture
-  ≁Data {Buffer ColorFormat}
+  ≁Data {Buffer ColorFormat Type ← "texture"}
 
   # Unload a texture, freeing it's memory
   #
@@ -238,20 +240,30 @@ PosArg   ↚ ≡₁□ T~Coords
     ≡₀◇Rayua~DrawTexturePro S!cdefba
   )
 
+  # Deprecated!
+  # **This function is DEPRECATED use** `Draw~Background` **instead**
+  #
   # Draw a texture covering the whole window.
   #
   # The texture will be stretched/scaled to properly fit the size of the window.
   # `DrawScreen` also supports a `Color` arg, like `Draw`
   # Optional args: Color
   # ? Texture
-  ~DrawScreen [Color ← White] Draw ⊙(Window~Size 1_1) Color:Color
+  ~DrawScreen [Color ← White] Draw ⊙(Window~Size 0_0) Color:Color
 └─╴
 
 # Draw different shapes onto the window
 ┌─╴Draw
-  # Fill the whole window with a color
-  # ? Color
-  Background ← Rayua~ClearBackground ⍤"Background only takes a single color"≍[4]⊸△ ToRayColor
+  # Fill the whole window with a color or texture
+  #
+  # When given a color, `Background` covers the whole window with that color.
+  # When given a texture `Background` scales the texture to fit over the whole window.
+  # ? Background
+  Background ← (
+    ⊸IsTexture
+    ⨬(Rayua~ClearBackground ⍤"Background only takes a single color or a texture"≍[4]⊸△ ColorArg
+    | Texture~Draw⊙(Window~Size 0_0))
+  )
 
   # Draw a line on the window
   #
