@@ -7,3 +7,5 @@
 - [ ] uiua-doc-gen support optional args and privates
 - [x] Loop takes conditional to end the loop
 - [x] add Catppuccin mocha colors
+- [ ] add triangle drawing
+- [ ] add gamepad support
