@@ -86,7 +86,7 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
   # Track caller!
   Hex ← (⌅(
       ⨬(⬚1≡₀◇^0|≡₁^0)=1⊸type ¯⌵
-    | ⨬(⬚@f≡₀◇°^0|≡₁^0)=0⊸type))!(
+    | ⨬(⬚@f≡₀◇°^0|≡₁°^0)=0⊸type))!(
     ⌅(⍣⌝⊂◌@#|⊂@#)
     ⌅(⍤"Hex string must be characters"=1⊸type
       ⍤"Hex string must have 6 or 8 characters"∊[6]_[8]⊸△)
