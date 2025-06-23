@@ -87,9 +87,9 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
   Hex ← (⌅(
       ⨬(⬚1≡₀◇^0|≡₁^0)=1⊸type ¯⌵
     | ⨬(⬚@f≡₀◇°^0|≡₁°^0)=0⊸type))!(
-    ⌅(⍣⌝⊂◌@#|⊂@#)
-    ⌅(⍤"Hex string must be characters"=1⊸type
-      ⍤"Hex string must have 6 or 8 characters"∊[6]_[8]⊸△)
+    ⌅(⍤"Hex string must be characters"=1⊸type)
+    ⌅(⍥(▽2)⊸(∊3_4⧻) ⍣⌝⊂◌@#|⊂@#)
+    ⌅(⍤"Hex string must have 3 or 4 channels"∊[6]_[8]⊸△)
     ⌅(⍤"Hex string has invalid characters"¬⊸˜∊∞) ⬚∞˜⊗HexDigits
     Rgb ⌝⊥16°⌅≡⬚0↙₂ ≡⇌ ⌅(↯∞_2|♭)
     °⌅(⍤"Color must be numbers"=0⊸type

@@ -4,6 +4,7 @@
 
 - [Getting Started](./docs/getting-started.md)
 - [Docs](https://marcos-cat.github.io/iris/)
+- [Examples](./examples/)
 
 ```uiua
 # Experimental!
@@ -46,10 +47,6 @@ This makes manipulating colors much easier - functions like `⁅`, `¬`, or `√
 work. It also means that you can use the
 [built-in color constants](https://www.uiua.org/docs/constants).
 
-<!--[Function Docs](https://marcos-cat.github.io/iris/)-->
-
-[Examples](./examples/)
-
 ## Projects in Iris
 
 - [Wordle](https://github.com/Marcos-cat/wordle-uiua)
@@ -65,4 +62,4 @@ common are:
 - `Draw` - draw different shapes on the screen
 - `Mouse` - access the user's mouse
 - `Key` - access the user's keyboard
-- `Screen` - access the OS window
+- `Window` - access the OS window
