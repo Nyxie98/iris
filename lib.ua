@@ -23,7 +23,7 @@ S!         ↚^ $"⊃(_)"/$"_|_"˜⍚⊂@∘˜⍚↯@⋅-@a°□₁
 
   # Convert an array from complex coordinates to vector cooridinates
   #
-  # Returns an array with the shape of the orignal, and and an additional 2-long trailing axis.
+  # Returns an array with the shape of the orignal, and an additional 2-long trailing axis.
   # The first component is the `X`, and the second is the `Y`.
   # The imaginary part of a complex number corresponds to `X` and the real part to `Y`.
   # `°Coords` takes vector coordinates and gives the complex equivalent.
@@ -78,10 +78,10 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
   # Convert a hexadecimal string into a color
   #
   # Expects a string in the form `#RRGGBB` where all the letters are hexadecimal digits corresponding to color channels.
-  # The leading `#` can be omitted, and and alpha channel can also be specified at the end.
+  # The leading `#` can be omitted, and alpha channel can also be specified at the end.
   # This function is pervasive, and will convert an array of strings, or an array of box strings into an array of colors.
-  # The output will always be non-box, so if a single string has an alpha channel, all of the output will.
-  # `°Hex` converts a color back into a hexidecimal string, always including the `#`.
+  # The output will always be non-box, so if a single string has an alpha channel, all of the output will have one too.
+  # `°Hex` converts a color back into a hexadecimal string, always including the `#`.
   # Color ? HexString
   # Track caller!
   Hex ← (⌅(
