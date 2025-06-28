@@ -37,23 +37,23 @@ T ← Transform
 
 ┌─╴Collide
   # Check if two rectangles collide
-  # ? Size₁ Position₁ Size₂ Position₂
+  # Collided ? Size₁ Position₁ Size₂ Position₂
   Rects ← /×/⊂> ⇌ ˜∩(⊟≡₀⊙∘) ∩˜(⟜+∩°⍉∩T~Coords)
 
   # Check if two circles collide
-  # ? Radius₁ Center₁ Radius₂ Center₂
+  # Collided ? Radius₁ Center₁ Radius₂ Center₂
   Circles ← <⊓(+|⌵-∩°T~Coords)⊙:
 
   # Check if a point is inside a circle
-  # ? Radius Center Point
+  # Collided ? Radius Center Point
   CirclePoint ← ≤⊙(⌵-∩°T~Coords)
 
   # Check if a point is inside a rectangle
-  # ? Rect Point
+  # Collided ? Rect Point
   RectPoint ← ×××∩°ℂ⊓⌟≥≤ °⊟\+°⍉ ∩°T~Coords
 
   # Check if a rectangle and a circle collide
-  # ? Rect Radius Center
+  # Collided ? Rect Radius Center
   RectCircle ← > ⌵- ⊸(↥⊙↧) °⊟\+°⍉°T~Coords ⊙:
 └─╴
 
@@ -103,6 +103,7 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
   # For either inverse if a scalar is provided the entire alpha channel will be set to it.
   # `0` is fully transparent and `1` is fully opaque.
   # Track caller!
+  # AlphaChannel ? Image
   Alpha ← ⊣°⍉ ⌅(⨬(⍉˜⊂1|⍜°⍉⬚1↙₄|∘|∘)⊸ColorFormat)
 
   Rosewater ← Hex "#f5e0dc"
@@ -120,12 +121,15 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
   Blue      ← Hex "#89b4fa"
   Lavender  ← Hex "#b4befe"
   Text      ← Hex "#cdd6f4"
-  Subtext   ← ˜⊏Hex "#a6adc8"_"#bac2de"
-  Overlay   ← ˜⊏Hex "#6c7086"_"#7f849c"_"#9399b2"
-  Surface   ← ˜⊏Hex "#313244"_"#45475a"_"#585b70"
-  Base      ← Hex "#1e1e2e"
-  Mantle    ← Hex "#181825"
-  Crust     ← Hex "#11111b"
+  # Color ? Level
+  Subtext ← ˜⊏Hex "#a6adc8"_"#bac2de"
+  # Color ? Level
+  Overlay ← ˜⊏Hex "#6c7086"_"#7f849c"_"#9399b2"
+  # Color ? Level
+  Surface ← ˜⊏Hex "#313244"_"#45475a"_"#585b70"
+  Base    ← Hex "#1e1e2e"
+  Mantle  ← Hex "#181825"
+  Crust   ← Hex "#11111b"
 └─╴
 
 ┌─╴Window
@@ -134,6 +138,7 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
   # `Full` returns a boolean to tell if the window is in fullscreen mode.
   # `°Full` can be passed a boolean to set the state of fullscreen mode.
   # A common pattern to toggle fullscreen is `⍜Full¬`.
+  # IsFullscreen ?
   # Track caller!
   Full ← ⌅(
     Rayua~IsWindowFullscreen
@@ -147,6 +152,7 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
   # If the window is in fullscreen mode when `°Size` is called, fullscreen mode with be turned off.
   # Neither dimension of the window can be zero.
   # If a single number is given as the dimensions, it will be used as both the width and the height.
+  # Size ?
   # Track caller!
   Size ← (°T~Coords ⌅(
       Os‼macos÷₂ ⊟Rayua~GetRenderWidth Rayua~GetRenderHeight
@@ -154,6 +160,7 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
       Rayua~SetWindowSize °⊟))
 
   # Get the size of the window when it is fullscreen
+  # FullSize ?
   FullSize ← (°T~Coords⊟ Rayua!⊃GetMonitorWidth GetMonitorHeight Rayua~GetCurrentMonitor)
 
   # The active FPS (framerate)
@@ -161,11 +168,19 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
   # `FPS` returns the actual framerate, which varies based on how long your device takes to run a frame.
   # `°FPS` sets the maximum FPS. By default, the FPS is unbounded, and frames will be run as fast as possible.
   # `FPS` can take `∞` to have the fastest possible framerate (the default behavior.)
+  # FPS ?
   # Track caller!
   FPS ← ⌅(
     Rayua~GetFPS
   | ⍥⊸(˜⍤0$"FPS must be greater than zero, but it is _"F)¬×⊸⊃(>0|≍[]△) ⌈
     Rayua~SetTargetFPS)
+
+  # Delta-time since last frame in seconds
+  # DeltaTime ?
+  Dt ← (Rayua~GetFrameTime)
+
+  # Sets the trace log to `DEBUG`, printing extra information about what Raylib is doing
+  Debug ← Rayua~SetTraceLogLevel Rayua~TraceLogLevel~Debug
 └─╴
 
 # Deprecated!
@@ -363,11 +378,11 @@ IsTexture ↚ ≍□"texture"⬚∞⊣
   Fix ↚ ⍥⋅Tab⊸=@\t ⍥⋅Enter⊸=@\n
 
   # Check if a key was pressed once
-  # ? Key
+  # IsPressed ? Key
   Pressed ← ≡₀◇(Rayua~IsKeyPressed Fix)
 
   # Check if a key is down
-  # ? Key
+  # IsDown ? Key
   Down ← ≡₀◇(Rayua~IsKeyDown Fix)
 
   # Call a function when a key is pressed
@@ -388,12 +403,14 @@ IsTexture ↚ ≍□"texture"⬚∞⊣
   # 
   # This function returns a string of queued characters
   # If the user has not typed since the function was called, the string will be empty
+  # TypedChars ? 
   Typed ← (⍥(⊂:▽⊸≠@\0Rayua~GetCharPressed)∞ "")
 
   # Get the key codes that the user has typed
   # 
   # This function returns an array of queued key codes
   # If the user has not typed since the function was called, the array will be empty
+  # TypedCodes ?
   TypedCodes ← (⍥(⊂:▽⊸≠0Rayua~GetKeyPressed)∞ [])
 
   # Emulate a text input on a string
@@ -401,6 +418,7 @@ IsTexture ↚ ≍□"texture"⬚∞⊣
   # This function edits a string based on the user's keyboard inputs
   # Typing alphanumerics will append to the string, as well as non-printing characters like newline, space, and tab
   # The string will also respect backspace and the Delete key to clear the string
+  # EditedText ? Text
   Input ← (
     ⊸˜∊Delete TypedCodes ⊂:Typed
     ⨬(⍥(⍜↻↘₂-₁⊸⊗@\0) ⧻⊚⊸=@\0 ⊂: ˜⊏"\0\n\t"▽⊸≠∞⬚∞˜⊗[Backspace Enter Tab]
@@ -434,17 +452,19 @@ IsTexture ↚ ≍□"texture"⬚∞⊣
   )^!(Left|Right|Middle|Side|Extra|Forward|Back)
 
   # Check if a mouse button was pressed once
-  # ? Button
+  # IsPressed ? Button
   Pressed ← ≡₀Rayua~IsMouseButtonPressed
 
   # Check if a mouse button is down
-  # ? Button
+  # IsDown ? Button
   Down ← ≡₀Rayua~IsMouseButtonDown
 
   # The current position of the mouse
+  # MousePos ?
   Pos ← (°T~Coords Rayua~GetMousePosition)
 
   # How many pixels the mouse has moved since the last frame
+  # MouseMovementVector ?
   Change ← (°T~Coords Rayua~GetMouseDelta)
 
   # Hide the mouse from the user
@@ -457,6 +477,7 @@ IsTexture ↚ ≍□"texture"⬚∞⊣
   # 
   # Returns `0` if the mouse has not scrolled, and `1` or `¯1` depending on the direction scrolled.
   # The sign may not nicely correspond to 'up' or 'down' since the direction of scrolling depends on the user's device.
+  # ScrollDir ?
   Scroll ← (⊣Rayua~GetMouseWheelMoveV)
 
   # Call a function on the scroll direction when the wheel is scrolled
@@ -488,6 +509,7 @@ IsTexture ↚ ≍□"texture"⬚∞⊣
   Down‼ ← ⍥(^1 Pos)Down ^0
 
   # Check if the mouse is on the window
+  # IsOnWindow ?
   OnWindow ← (Rayua~IsCursorOnScreen)
 
   # Deprecated!
@@ -498,11 +520,13 @@ IsTexture ↚ ≍□"texture"⬚∞⊣
 # ? Size Title
 Open ← Rayua~InitWindow ⊓(°⊟ ⍥(↯2)≍[]⊸△ T~Coords|$"_") Rayua~SetTraceLogLevel Rayua~TraceLogLevel~Warning
 
-# Sets the trace log to `DEBUG`, printing extra information about what Raylib is doing
-Debug ← Rayua~SetTraceLogLevel Rayua~TraceLogLevel~Debug
+# Use `Window~Debug` instead
+# Deprecated!
+Debug ← Window~Debug
 
-# Delta-time since last frame in seconds
-Dt ← (Rayua~GetFrameTime)
+# Use `Window~Dt` instead
+# Deprecated!
+Dt ← (Window~Dt)
 
 # ? Conditional Body
 Loop‼ ← Rayua~CloseWindow ⍢(
