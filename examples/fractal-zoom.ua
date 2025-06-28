@@ -5,7 +5,7 @@ Size ← 1024
 ~ {Zoom Center Iters}
 Radius ← ˜ⁿ2¯Zoom
 Start  ← New ¯0.5 ¯0.6r 16
-Render ← ⍉ <2⌵ ⍥(+°√) Iters⟜(. +Center|˙⊞ℂ ×Radius|-⊸¬÷⟜⇡ ÷4Size)
+Render ← I~Color!⨬Base Red ⍉ <2⌵ ⍥(+°√) Iters⟜(. +Center|˙⊞ℂ ×Radius|-⊸¬÷⟜⇡ ÷2Size)
 I~Open Size "Mandelbrot Zoom"
 Fractal ← I~Texture~LoadImage Render Start
 Start $ShowInfo 1
@@ -27,6 +27,6 @@ I~Loop!(
       | "[J/K] to change iters"
       | "[H] to hide this info"
       | "[R] to reset")}
-    I~Draw~Text Red 30 10_10 /$"_\n_"
+    I~Draw~Text Font:"examples/Uiua386.ttf" I~Color~Text 30 10_10 /$"_\n_"
   )⤙⊙∘
 )
