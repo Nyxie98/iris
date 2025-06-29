@@ -42,7 +42,7 @@ T ← Transform
 
   # Check if two circles collide
   # Collided ? Radius₁ Center₁ Radius₂ Center₂
-  Circles ← <⊓(+|⌵-∩°T~Coords)⊙:
+  Circles ← <˜⊓(+|⌵-∩°T~Coords)
 
   # Check if a point is inside a circle
   # Collided ? Radius Center Point
@@ -404,14 +404,14 @@ IsTexture ↚ ≍□"texture"⬚∞⊣
   # This function returns a string of queued characters
   # If the user has not typed since the function was called, the string will be empty
   # TypedChars ? 
-  Typed ← (⍥(⊂:▽⊸≠@\0Rayua~GetCharPressed)∞ "")
+  Typed ← (⍥(˜⊂▽⊸≠@\0Rayua~GetCharPressed)∞ "")
 
   # Get the key codes that the user has typed
   # 
   # This function returns an array of queued key codes
   # If the user has not typed since the function was called, the array will be empty
   # TypedCodes ?
-  TypedCodes ← (⍥(⊂:▽⊸≠0Rayua~GetKeyPressed)∞ [])
+  TypedCodes ← (⍥(˜⊂▽⊸≠0Rayua~GetKeyPressed)∞ [])
 
   # Emulate a text input on a string
   # 
@@ -421,7 +421,7 @@ IsTexture ↚ ≍□"texture"⬚∞⊣
   # EditedText ? Text
   Input ← (
     ⊸˜∊Delete TypedCodes ⊂:Typed
-    ⨬(⍥(⍜↻↘₂-₁⊸⊗@\0) ⧻⊚⊸=@\0 ⊂: ˜⊏"\0\n\t"▽⊸≠∞⬚∞˜⊗[Backspace Enter Tab]
+    ⨬(⍥(⍜↻↘₂-₁⊸⊗@\0) ⧻⊚⊸=@\0 ˜⊂ ˜⊏"\0\n\t"▽⊸≠∞⬚∞˜⊗[Backspace Enter Tab]
     | ⋅⋅"")
   )
 
