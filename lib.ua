@@ -367,6 +367,14 @@ IsTexture ↚ ≍□"texture"⬚∞⊣
   # ? Color Size Position
   ~Square [Centered ← 0] Rect ⊙(⍉↯2) Centered:Centered
 
+  PointOrder ↚ <0/+×⊓+-∩⊸↻₁°⊟≡⊟₃
+
+  # Draw a triangle on the window
+  #
+  # The points `A`, `B`, and `C` may be in any order
+  # ? Color A B C
+  Triangle ← ≡₀◇(Rayua~DrawTriangle ⍥:◡PointOrder) ⤚⋅⊙⊙∘ ⊓(ColorArg|∩₃PosArg)
+
   Texture ← Texture~Draw
 └─╴
 
