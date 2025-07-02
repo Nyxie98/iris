@@ -319,8 +319,8 @@ IsTexture ↚ ≍□"texture"⬚∞⊣
   # Draw a line on the window
   #
   # A line will draw from point A to point B, even if either are outside the window.
-  # A thickness of zero will cause the line not to draw at all.
-  # ? Color Thickness A B
+  # A width of zero will cause the line not to draw at all.
+  # ? Color Width A B
   Line ← ≡₀◇Rayua~DrawLineEx S!cdba ⊓(ColorArg|↥₀⌈|∩PosArg)
 
   # Draw a circle on the window
@@ -337,7 +337,7 @@ IsTexture ↚ ≍□"texture"⬚∞⊣
   )
 
   # ? Font Size
-  LoadFont ↚ ⨬(memo(Rayua~LoadFontEx⊙⊙[])|Rayua~GetFontDefault)⊸≍∞ ⊙(↥₅ ⍥⁅₋₁ ⊸>₁₀₀)
+  LoadFont ↚ ⨬(memo(Rayua~LoadFontEx⊙⊙[])|memoRayua~GetFontDefault)⊸≍∞ ⊙(↥₅ ⍥⁅₋₁ ⊸>₁₀₀)
 
   # Print text to the window
   #
