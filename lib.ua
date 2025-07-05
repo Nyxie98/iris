@@ -142,7 +142,7 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
   # Track caller!
   Full ← ⌅(
     Rayua~IsWindowFullscreen
-  | ⍥⊸(˜⍤$"Fullscreen state must be a boolean, but it is _"F)¬≍1⊸∊0_1
+  | ⍥⊸(˜⍤0$"Fullscreen state must be a boolean, but it is _"F)¬≍1⊸∊0_1
     ⍥Rayua~ToggleFullscreen≠Rayua~IsWindowFullscreen)
 
   # The size of the window
