@@ -187,7 +187,14 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
 Screen ← Window
 
 ┌─╴Net
-  ≁Connection {TcpThread BoreProc RecvPort SendPort ← ∞}
+  ≁Connection {
+    TcpThread
+    BoreProc
+    RecvPort
+    SendPort ← ∞
+    Type ← "connection"
+  }
+  IsConnection! ↚ ⊸(⍤$"_ must take a connection"^0 ≍□"connection"⊣)
 
   Port ← Connection~RecvPort
 
@@ -200,18 +207,19 @@ Screen ← Window
   # Connection ?
   ~Start {Port ← 8080} Connection ⊃(spawn⍢(⍣(send0°binary ⍜(&tcpa|&rb∞ ⊸&tcpsrt0.5)|⋅&ep))1 &tcpl $"localhost:_"|InitBore) Port
 
-  End ← &cl Connection~BoreProc
+  # ? Connection
+  End ← &cl Connection~BoreProc IsConnection!"End"
 
   # ? Port Connection
-  Connect ← °⊸Connection~SendPort
+  Connect ← °⊸Connection~SendPort ⊙IsConnection!"Connect"
 
   Connected ← ¬≍∞Connection~SendPort
 
   # ? Value Connection
-  Give ← ⍜(&tcpc|˜&w ⊸&tcpswt0.5) ⊃($"bore.pub:_"Connection~SendPort◌|binary|⍤"Not connected"Connected◌)
+  Give ← ⍜(&tcpc|˜&w ⊸&tcpswt0.5) ⊃($"bore.pub:_"Connection~SendPort◌|binary|⍤"Not connected"Connected◌) ⊙IsConnection!"Give"
 
-  # Value ?
-  Get ← ⍣(tryrecv Connection~TcpThread|°◌|˜⍤0"No value has been sent yet")
+  # Value ? Connection
+  Get ← ⍣(tryrecv Connection~TcpThread|°◌|˜⍤0"No value has been sent yet") IsConnection!"Get"
 
   Get! ← ⍣(⍩(^0)⊸Get)∘
 └─╴
