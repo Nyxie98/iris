@@ -286,7 +286,7 @@ IsTexture ↚ ≍□"texture"⬚∞⊣
 
   ToRayImage ↚ ⌅(
     Data ⊃(Rayua~Image ⊃(♭ °Color~Rgb ToFullColor|°⊟⇌△₂|1 7)|ColorFormat)
-  | Rayua~UnloadImage Data~Buffer⟜(ToFormat|Color~Rgb ReadImageData))
+  | Rayua~UnloadImage ⟜(Data~Buffer|ToFormat|Color~Rgb ReadImageData))
 
   ImageAndTextureData ↚ ⊓(⊃(⇌△₂) ColorFormat|⊃(⊟°ℂSize) Data~ColorFormat)
   ImageError ↚ ⨬(
@@ -374,7 +374,7 @@ IsTexture ↚ ≍□"texture"⬚∞⊣
   # ? Color Radius Center
   ~Circle {Angle ← 1|Start ← 0} (
     ⊃Angle Start
-    ≍1⟜(⌈×32|∩(-90×360) ⊸+) ⊓(⍜⌵↧₁|◿₁|ColorArg|↥₀⌈|PosArg) # B Segments End Start Color Radius Center ?
+    ⟜(≍1|⌈×32|∩(-90×360) ⊸+) ⊓(⍜⌵↧₁|◿₁|ColorArg|↥₀⌈|PosArg) # B Segments End Start Color Radius Center ?
     ⨬(≡₀◇Rayua~DrawCircleSector S!fecbad|≡₀◇Rayua~DrawCircle S!fed)
   )
 
