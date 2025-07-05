@@ -5,7 +5,7 @@ Size ← 1024
 ~ {Zoom Center Iters}
 Radius ← ˜ⁿ2¯Zoom
 Start  ← New ¯0.5 ¯0.6r 16
-Render ← I~Color!⨬Base Red ⍉ <2⌵ ⍥(+°√) Iters⟜(. +Center|˙⊞ℂ ×Radius|-⊸¬÷⟜⇡ ÷2Size)
+Render ← I~Color!⨬Base Red ⍉ <2⌵ ⍥(+°√) ⟜(Iters|. +Center|˙⊞ℂ ×Radius|-⊸¬÷⟜⇡ ÷2Size)
 I~Open Size "Mandelbrot Zoom"
 Fractal ← I~Texture~LoadImage Render Start
 Start $ShowInfo 1
