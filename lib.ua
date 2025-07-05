@@ -225,7 +225,7 @@ Screen ← Window
   # Track caller!
   Get ← ⍣(tryrecv Connection~TcpThread|°◌|˜⍤0"No value has been sent yet") IsConnection!"Get"
 
-  Get! ← ⍣(⍩(^0)⊸Get)∘
+  Get! ← ⍣(⍩(^0)Get)◌ IsConnection!"Get!"
 └─╴
 
 ┌─╴Sound
