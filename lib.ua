@@ -186,6 +186,36 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
 # Deprecated!
 Screen ← Window
 
+┌─╴Net
+  ≁Connection {TcpThread BoreProc RecvPort SendPort ← ∞}
+
+  Port ← Connection~RecvPort
+
+  # ProcStream RecvPort ? LocalPort
+  InitBore ↚ ⍣(
+    ˜⌞⊙∩&cl &runs ⊜□⊸≠@\s $"bore local _ --to bore.pub"
+    ⟜(⋕ ⍜⇌(▽\×⊸∊+@0⇡10 ↘₁) &ru@\n)
+  | ˜⍤0"Couldn't start a server :c")
+
+  # Connection ?
+  ~Start {Port ← 8080} Connection ⊃(spawn⍢(⍣(send0°binary ⍜(&tcpa|&rb∞ ⊸&tcpsrt0.5)|⋅&ep))1 &tcpl $"localhost:_"|InitBore) Port
+
+  End ← &cl Connection~BoreProc
+
+  # ? Port Connection
+  Connect ← °⊸Connection~SendPort
+
+  Connected ← ¬≍∞Connection~SendPort
+
+  # ? Value Connection
+  Give ← ⍜(&tcpc|˜&w ⊸&tcpswt0.5) ⊃($"bore.pub:_"Connection~SendPort◌|binary|⍤"Not connected"Connected◌)
+
+  # Value ?
+  Get ← ⍣(tryrecv Connection~TcpThread|°◌|˜⍤0"No value has been sent yet")
+
+  Get! ← ⍣(⍩(^0)⊸Get)∘
+└─╴
+
 ┌─╴Sound
   ≁Data {Buffer Clone}
 
