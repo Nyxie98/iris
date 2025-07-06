@@ -196,16 +196,28 @@ Screen ← Window
   }
   IsConnection! ↚ ⊸(⍤$"_ must take a connection"^0 ≍□"connection"⊣)
 
+  # This could probably be done better with a system function for looking at PATH
+  HasBore ↚ memo(
+    ⍚⍜⇌(↙⊸⊗pathsep) /◇⊂⍚⍣&fld[] ⊜□⊸≠ ˜⊏":;" ≍"windows"osfamily &var"PATH"
+    ⍤"`bore` must be installed to use Net. Install it with `$ cargo install bore-cli`"˜∊□"bore"
+  )
+
   Port ← Connection~RecvPort
 
   # ProcStream RecvPort ? LocalPort
-  InitBore ↚ ⍣(
-    ˜⌞⊙∩&cl &runs ⊜□⊸≠@\s $"bore local _ --to bore.pub"
-    ⟜(⋕ ⍜⇌(▽\×⊸∊+@0⇡10 ↘₁) &ru@\n)
-  | ˜⍤0"Couldn't start a server :c")
+  InitBore ↚ (
+    HasBore
+    ⍣(˜⌞⊙∩&cl &runs ⊜□⊸≠@\s $"bore local _ --to bore.pub"
+      ⟜(⋕ ⍜⇌(▽\×⊸∊+@0⇡10 ↘₁) &ru@\n)
+    | ˜⍤0"Failed to start a server")
+  )
+
+  # Thread ? Port
+  StartThread ← spawn⍢(⍣(send0°binary ⍜(&tcpa|&rb∞ ⊸&tcpsrt0.5)|⋅&ep)|1) &tcpl $"localhost:_"
 
   # Connection ?
-  ~Start {Port ← 8080} Connection ⊃(spawn⍢(⍣(send0°binary ⍜(&tcpa|&rb∞ ⊸&tcpsrt0.5)|⋅&ep))1 &tcpl $"localhost:_"|InitBore) Port
+  # Track caller!
+  ~Start {Port ← 8080} Connection ⊃(StartThread|InitBore) Port
 
   # ? Connection
   # Track caller!
@@ -574,9 +586,7 @@ Open ← Rayua~InitWindow ⊓(°⊟ ⍥(↯2)≍[]⊸△ T~Coords|$"_") Rayua~Se
 # Deprecated!
 Debug ← Window~Debug
 
-# Use `Window~Dt` instead
-# Deprecated!
-Dt ← (Window~Dt)
+Dt ← (⚂)
 
 # ? Conditional Body
 Loop‼ ← Rayua~CloseWindow ⍢(
