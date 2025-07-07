@@ -187,14 +187,14 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
 Screen ← Window
 
 ┌─╴Net
-  ≁Connection {
+  ≁Tunnel {
     TcpThread
     BoreProc
     RecvPort
-    SendPort ← ∞
+    SendAddr ← ∞
     Type ← "connection"
   }
-  IsConnection! ↚ ⊸(⍤$"_ must take a connection"^0 ≍□"connection"⊣)
+  IsTunnel! ↚ ⊸(⍤$"_ must take a connection"^0 ≍□"connection"⊣)
 
   # This could probably be done better with a system function for looking at PATH
   HasBore ↚ memo(
@@ -202,7 +202,11 @@ Screen ← Window
     ⍤"`bore` must be installed to use Net. Install it with `$ cargo install bore-cli`"˜∊□"bore"
   )
 
-  Port ← Connection~RecvPort
+  # The external bore port that a tunnel reads from
+  #
+  # This is the port that must be shared to another program to connect them.
+  # Calling this on a non-bore tunnel will error
+  Port ← ⍤"Port must take a tunnel using bore"⊸(¬≍∞) Tunnel~RecvPort IsTunnel!"Port"
 
   # ProcStream RecvPort ? LocalPort
   InitBore ↚ (
@@ -212,32 +216,57 @@ Screen ← Window
     | ˜⍤0"Failed to start a server")
   )
 
-  # Thread ? Port
-  StartThread ← spawn⍢(⍣(send0°binary ⍜(&tcpa|&rb∞ ⊸&tcpsrt0.5)|⋅&ep)|1) &tcpl $"localhost:_"
+  # Thread ? LocalPort
+  StartThread ↚ spawn⍢(⍣(send0°binary ⍜(&tcpa|&rb∞ ⊸&tcpsrt0.5)|⋅&ep)|1) &tcpl $"localhost:_"
 
-  # Connection ?
+  # Start a network tunnel
+  #
+  # `Start` spawns a thread that reads for incoming data.
+  # The optional argument `LocalPort` controls which port on localhost is read to receive values (8080 by default.)
+  # Also by default a bore process will be set up to receive data.
+  # To disable this and control hosting yourself, set the `UseBore` optional argument to `0`.
+  # Tunnel ?
   # Track caller!
-  ~Start {Port ← 8080} Connection ⊃(StartThread|InitBore) Port
+  ~Start {LocalPort ← 8080|UseBore ← 1} Tunnel ⊃(⋅StartThread|⨬(∩∞|InitBore)) ⊃(UseBore|LocalPort)
 
-  # ? Connection
+  # End a tunnel connection
+  #
+  # This cleans up the bore process if the tunnel used bore, and does nothing otherwise.
+  # ? Tunnel
   # Track caller!
-  End ← &cl Connection~BoreProc IsConnection!"End"
+  End ← ⍥&cl ⊸(¬≍∞) Tunnel~BoreProc IsTunnel!"End"
 
-  # ? Port Connection
+  # Connect a tunnel to a certain port
+  #
+  # If using bore, the port given here should be from calling `Port` in a different program on their tunnel.
+  # If not using bore, port can be a full IP address with a port.
+  # ? Port Tunnel
   # Track caller!
-  Connect ← °⊸Connection~SendPort ⊙IsConnection!"Connect"
+  Connect ← °⊸Tunnel~SendAddr ⍥$"bore.pub:_"⊸(≍0type) ⍣⋕∘ ⊙IsTunnel!"Connect"
 
-  Connected ← ¬≍∞Connection~SendPort
-
-  # ? Value Connection
+  # Check if a tunnel is set up to send values to another
+  #
+  # IsConnected ? Tunnel
   # Track caller!
-  Give ← ⍜(&tcpc|˜&w ⊸&tcpswt0.5) ⊃($"bore.pub:_"Connection~SendPort◌|binary|⍤"Not connected"Connected◌) ⊙IsConnection!"Give"
+  Connected ← ¬≍∞Tunnel~SendAddr IsTunnel!"Connected"
 
-  # Value ? Connection
+  # Send a value to a different program
+  #
+  # The tunnel must have been connected to a port with `Connect` in order to send a value.
+  # The value can be any array.
+  # ? Value Tunnel
   # Track caller!
-  Get ← ⍣(tryrecv Connection~TcpThread|°◌|˜⍤0"No value has been sent yet") IsConnection!"Get"
+  Give ← ⍜(&tcpc|˜&w ⊸&tcpswt0.5) ⊃(⋅Tunnel~SendAddr|binary|⍤"You cannot give a value on an unconnected tunnel"Connected◌) ⊙IsTunnel!"Give"
 
-  Get! ← ⍣(⍩(^0)Get)◌ IsConnection!"Get!"
+  # Attempt to get a value from a tunnel
+  #
+  # If `Get` is called and no value was sent, and no fill was supplied, it will error.
+  # Value ? Tunnel
+  # Track caller!
+  Get ← ⍣(tryrecv Tunnel~TcpThread|°◌|˜⍤0"No value has been sent yet") IsTunnel!"Get"
+
+  # Call a function when a value is sent through a tunnel
+  Get! ← ⍣(⍩(^0)Get)◌ IsTunnel!"Get!"
 └─╴
 
 ┌─╴Sound
