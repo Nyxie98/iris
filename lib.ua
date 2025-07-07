@@ -615,8 +615,6 @@ Open ← Rayua~InitWindow ⊓(°⊟ ⍥(↯2)≍[]⊸△ T~Coords|$"_") Rayua~Se
 # Deprecated!
 Debug ← Window~Debug
 
-Dt ← (⚂)
-
 # ? Conditional Body
 Loop‼ ← Rayua~CloseWindow ⍢(
   Rayua~EndDrawing ^1 Rayua~BeginDrawing
