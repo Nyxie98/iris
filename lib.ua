@@ -261,9 +261,10 @@ Screen ← Window
   # Attempt to get a value from a tunnel
   #
   # If `Get` is called and no value was sent, and no fill was supplied, it will error.
+  # If the optional argument `Block` is `1`, `Get` will block the program until a value is sent.
   # Value ? Tunnel
   # Track caller!
-  Get ← ⍣(tryrecv Tunnel~TcpThread|°◌|˜⍤0"No value has been sent yet") IsTunnel!"Get"
+  ~Get {Block ← 0} ⨬(⍣(tryrecv|°◌|˜⍤0"No value has been sent yet")|recv) ⊓(Block|Tunnel~TcpThread IsTunnel!"Get")
 
   # Call a function when a value is sent through a tunnel
   Get! ← ⍣(⍩(^0)Get)◌ IsTunnel!"Get!"
