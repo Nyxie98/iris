@@ -482,14 +482,17 @@ IsTexture ↚ ≍□"texture"⬚∞⊣
   # The first function is the key to run the function on (or identity to take from the stack)
   # The second function will be called when the key is pressed
   # ? Key Function
-  Pressed‼ ← ⍥(^1)Pressed ^0
+  Pressed‼ ← (
+    {/∨ Pressed ⍤"At least one key must be specified"⊸(±⧻) ♭ ^0}
+    ⍥(^1) ⨬(°□₁|×⊙(/×Down♭) °□₂) ⊸(-₁⧻)
+  )
 
   # Call a function when a key is down
   # 
   # The first function is the key to run the function on (or identity to take from the stack)
   # The second function will be called when the key is down
   # ? Key Function
-  Down‼ ← ⍥(^1)Down ^0
+  Down‼ ← ⍥(^1) Down ^0
 
   # Get the characters that the user has typed
   # 
