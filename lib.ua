@@ -566,7 +566,7 @@ IsTexture ↚ ≍□"texture"⬚∞⊣
   # Hide the mouse from the user
   # 
   # `°Hide` will make the mouse reappear.
-  # The user can still use the mouse while it it hidden. The affect is purely visual.
+  # The user can still use the mouse while it it hidden. The effect is purely visual.
   Hide ← ⌅(Rayua~HideCursor|Rayua~ShowCursor)
 
   # The direction the mouse is scrolling
