@@ -199,7 +199,8 @@ Screen ← Window
   # This could probably be done better with a system function for looking at PATH
   HasBore ↚ memo(
     ⍚⍜⇌(↙⊸⊗pathsep) /◇⊂⍚⍣&fld[] ⊜□⊸≠ ˜⊏":;" ≍"windows"osfamily &var"PATH"
-    ⍤"`bore` must be installed to use Net. Install it with `$ cargo install bore-cli`"˜∊□"bore"
+    ˜∊□ ⊂"bore" ⍥(⊂@.)⊸(±⧻) exeext
+    ⍤"`bore` must be installed to use Net. Install it with `$ cargo install bore-cli`"
   )
 
   # The external bore port that a tunnel reads from
