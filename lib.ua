@@ -284,12 +284,12 @@ Screen ← Window
 └─╴
 
 ColorArg ↚ |1 ≡₁□ ⨬(
-  °Color~Rgb ⍤"Color must have 3 or 4 channels"=4⬚0⊣⊸△ ⍥⍜°⍉⬚1↙₄=3⬚0⊣⊸△
+  ⍤"Color must have 1 through 4 channels" ∊⇡₁4⊸⧻₋₁ ⍥¤⊸(≍[]△)
+  °Color~Rgb ⍥⍜°⍉⬚1↙₄⊸(=3⊣△) ⍥⍜(⊢°⍉|↯3)⊸(<3⊣△)
 | °Color~Rgb ⍥⍜°⍉⬚1↙₄=3⊣⊸△ Color~Hex
 | ⬚255≡₀◇ColorArg
 | ⍤"Color cannot be complex"0
 ) ⊸type
-# ColorArg ↚ ≡₁□ ToRayColor
 SizeArg ↚ ≡₁□ ⍥˙⊟=0⧻⊸△ T~Coords
 PosArg  ↚ ≡₁□ T~Coords
 
