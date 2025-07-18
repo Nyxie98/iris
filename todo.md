@@ -9,3 +9,4 @@
 - [x] add Catppuccin mocha colors
 - [x] add triangle drawing
 - [ ] add gamepad support
+- [ ] Draw~Polygon with arbitrary vertices (ear-clipping)
