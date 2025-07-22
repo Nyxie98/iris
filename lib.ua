@@ -325,7 +325,7 @@ IsTexture ↚ ≍□"texture"⬚∞⊣
   ToFormat ↚ |2 ⨬(⊢°⍉|⍜°⍉↙₃|⍜°⍉(⊏0_3)|∘) Data~ColorFormat
 
   # Reads the literal bytes from the buffer with no processing, only shaping
-  ReadImageData ↚ ↯⤙(&memcpy"unsigned char"⊙/×) Rayua~Image!(Data⟜[⊃Height Width⊙4]) Data~Buffer
+  ReadImageData ↚ ↯⤙(&memcpy⊙/×) Rayua~Image!(Data⟜[⊃Height Width⊙4]) Data~Buffer
 
   ToRayImage ↚ ⌅(
     Data ⊃(Rayua~Image ⊃(♭ °Color~Rgb ToFullColor|°⊟⇌△₂|1 7)|ColorFormat)
