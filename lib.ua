@@ -461,6 +461,22 @@ IsTexture ↚ ≍□"texture"⬚∞⊣
   Triangle ← ≡₀◇(Rayua~DrawTriangle ⍥:◡PointOrder) ⤚⋅⊙⊙∘ ⊓(ColorArg|∩₃PosArg)
 
   Texture ← Texture~Draw
+
+  RenderTxDims ↚ (°ℂ↥Window!⊃FullSize Size)
+  RenderTxRect ↚ (memo[⊃⊓⋅0∘⊓∘¯ RenderTxDims])
+  RenderTx     ↚ (memo(Rayua~LoadRenderTexture RenderTxDims))
+
+  # Draw to the Canvas, then draw the canvas to the window
+  #
+  # Any drawing functions that are executed inside `Canvas!` will be drawn to the global canvas instead of the window.
+  # On its own, this is indistinguishable from normal drawing. However, the state of the canvas is maintained even when the window is cleared.
+  # This makes certain kinds of graphical programs much simpler, as they don't have to redraw the entire window each frame.
+  Canvas! ← (
+    Rayua~BeginTextureMode RenderTx
+    ^0
+    Rayua~EndTextureMode
+    Rayua~DrawTextureRec⊃(Rayua~RenderTexture~Texture RenderTx|RenderTxRect|[0 0]|[255 255 255 255])
+  )
 └─╴
 
 ┌─╴Key
