@@ -85,8 +85,8 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
   # Color ? HexString
   # Track caller!
   Hex ← (⌅(
-      ⨬(⬚1≡₀◇^0|≡₁^0)=1⊸type ¯⌵
-    | ⨬(⬚@f≡₀◇°^0|≡₁°^0)=0⊸type))!(
+      ⨬(⬚1≡₀◇^|≡₁^)=1⊸type ¯⌵
+    | ⨬(⬚@f≡₀◇°^|≡₁°^)=0⊸type))!(
     ⌅(⍤"Hex string must be characters"=1⊸type)
     ⌅(⍥(▽2)⊸(∊3_4⧻) ⍣⌝⊂◌@#|⊂@#)
     ⌅(⍤"Hex string must have 3 or 4 channels"∊[6]_[8]⊸△)
@@ -191,7 +191,7 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
     SendAddr ← ∞
     Type ← "connection"
   }
-  IsTunnel! ↚ ⊸(⍤$"_ must take a connection"^0 ≍□"connection"⊣)
+  IsTunnel! ↚ ⊸(⍤$"_ must take a connection"^≍□"connection"⊣)
 
   # This could probably be done better with a system function for looking at PATH
   HasBore ↚ memo(
@@ -265,7 +265,7 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
   ~Get {Block ← 0} ⨬(⍣(tryrecv|°◌|˜⍤0"No value has been sent yet")|recv) ⊓(Block|Tunnel~TcpThread IsTunnel!"Get")
 
   # Call a function when a value is sent through a tunnel
-  Get! ← ⍣(⍩(^0)Get)◌ IsTunnel!"Get!"
+  Get! ← ⍣(⍩^Get)◌ IsTunnel!"Get!"
 └─╴
 
 ┌─╴Sound
@@ -459,7 +459,7 @@ IsTexture ↚ ≍□"texture"⬚∞⊣
   # This makes certain kinds of graphical programs much simpler, as they don't have to redraw the entire window each frame.
   Canvas! ← (
     Rayua~BeginTextureMode RenderTx
-    ^0
+    ^
     Rayua~EndTextureMode
     Rayua~DrawTextureRec⊃(Rayua~RenderTexture~Texture RenderTx|RenderTxRect|[0 0]|[255 255 255 255])
   )
@@ -581,7 +581,7 @@ IsTexture ↚ ≍□"texture"⬚∞⊣
   # Call a function on the scroll direction when the wheel is scrolled
   # 
   # The function will be called on a value of either `1` or `¯1`, but never `0`
-  Scroll! ← ⨬◌(^0) ⊸≠0 Scroll
+  Scroll! ← ⨬◌^ ⊸≠0 Scroll
 
   # Call a function when the user drags the mouse
   # 
@@ -621,4 +621,4 @@ Loop‼ ← Rayua~CloseWindow ⍢(
 | ×¬Rayua~WindowShouldClose ^0)
 
 # ? Body
-Loop! ← Loop‼1^0
+Loop! ← Loop‼1^
