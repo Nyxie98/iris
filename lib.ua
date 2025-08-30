@@ -183,9 +183,6 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
   Debug ← Rayua~SetTraceLogLevel Rayua~TraceLogLevel~Debug
 └─╴
 
-# Deprecated!
-Screen ← Window
-
 ┌─╴Net
   ≁Tunnel {
     TcpThread
@@ -374,17 +371,6 @@ IsTexture ↚ ≍□"texture"⬚∞⊣
     | ⊃(≡₀⍚⊂ ⍥(+◡⋅÷₂)¬|⋅⋅÷₂) ⊙˜⊓PosArg SizeArg)
     ≡₀◇Rayua~DrawTexturePro S!cdefba
   )
-
-  # Deprecated!
-  # **This function is DEPRECATED use** `Draw~Background` **instead**
-  #
-  # Draw a texture covering the whole window.
-  #
-  # The texture will be stretched/scaled to properly fit the size of the window.
-  # `DrawScreen` also supports a `Color` arg, like `Draw`
-  # Optional args: Color
-  # ? Texture
-  ~DrawScreen [Color ← White] Draw ⊙(Window~Size 0_0) Color:Color
 └─╴
 
 # Draw different shapes onto the window
@@ -623,18 +609,11 @@ IsTexture ↚ ≍□"texture"⬚∞⊣
   # Check if the mouse is on the window
   # IsOnWindow ?
   OnWindow ← (Rayua~IsCursorOnScreen)
-
-  # Deprecated!
-  OnScreen ← (OnWindow)
 └─╴
 
 # Open a new window with a title
 # ? Size Title
 Open ← Rayua~InitWindow ⊓(°⊟ ⍥(↯2)≍[]⊸△ T~Coords|$"_") Rayua~SetTraceLogLevel Rayua~TraceLogLevel~Warning
-
-# Use `Window~Debug` instead
-# Deprecated!
-Debug ← Window~Debug
 
 # ? Conditional Body
 Loop‼ ← Rayua~CloseWindow ⍢(
