@@ -19,7 +19,7 @@ S!         ↚^ $"⊃(_)"/$"_|_"˜⍚⊂@∘˜⍚↯@⋅-@a°□₁
     ⨬◌(˜⍤0$"Expected number array with X and Y components, but got shape _")≠2⊸⬚2⊣◌
   | ◌◌
   | ˜⍤0$"Expeced number or complex array, but got a _ array" ⨬"character""box"=1 ⊙◌
-  )⊸˜⊗0_3 ⊃type△
+  )⊸⨂0_3 ⊃type△
 
   # Convert an array from complex coordinates to vector cooridinates
   #
@@ -59,7 +59,7 @@ T ← Transform
 
 # 0 = Black and white, 1 = Color, 2 = Black and white alpha, 3 = Color alpha
 # ? Image
-ColorFormat ↚ ⍤"Image does not have a possible color format"⊸≠4 ˜⊗{[][3][2][4]} □↘₂△
+ColorFormat ↚ ⍤"Image does not have a possible color format"⊸≠4 ⨂{[][3][2][4]} □↘₂△
 FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
 
 ┌─╴Color
@@ -90,7 +90,7 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
     ⌅(⍤"Hex string must be characters"=1⊸type)
     ⌅(⍥(▽2)⊸(∊3_4⧻) ⍣⌝⊂◌@#|⊂@#)
     ⌅(⍤"Hex string must have 3 or 4 channels"∊[6]_[8]⊸△)
-    ⌅(⍤"Hex string has invalid characters"¬⊸˜∊∞) ⬚∞˜⊗HexDigits
+    ⌅(⍤"Hex string has invalid characters"¬⊸˜∊∞) ⬚∞⨂HexDigits
     Rgb ⌝⊥16°⌅≡⬚0↙₂ ≡⇌ ⌅(↯∞_2|♭)
     °⌅(⍤"Color must be numbers"=0⊸type
        ⍤"Color must be 3 or 4 digits"∊[3]_[4]⊸△)
@@ -198,7 +198,7 @@ Screen ← Window
 
   # This could probably be done better with a system function for looking at PATH
   HasBore ↚ memo(
-    ⍚⍜⇌(↙⊸⊗pathsep) /◇⊂⍚⍣&fld[] ⊜□⊸≠ ˜⊏":;" ≍"windows"osfamily &var"PATH"
+    ⍚⍜⇌(↙⊸˜⨂pathsep) /◇⊂⍚⍣&fld[] ⊜□⊸≠ ˜⊏":;" ≍"windows"osfamily &var"PATH"
     ˜∊□ ⊂"bore" ⍥(⊂@.)⊸(±⧻) exeext
     ⍤"`bore` must be installed to use Net. Install it with `$ cargo install bore-cli`"
   )
@@ -533,7 +533,7 @@ IsTexture ↚ ≍□"texture"⬚∞⊣
   # EditedText ? Text
   Input ← (
     ⊸˜∊Delete TypedCodes ⊂:Typed
-    ⨬(⍥(⍜↻↘₂-₁⊸⊗@\0) ⧻⊚⊸=@\0 ˜⊂ ˜⊏"\0\n\t"▽⊸≠∞⬚∞˜⊗[Backspace Enter Tab]
+    ⨬(⍥(⍜↻↘₂-₁⊸˜⨂@\0) ⧻⊚⊸=@\0 ˜⊂ ˜⊏"\0\n\t"▽⊸≠∞⬚∞⨂[Backspace Enter Tab]
     | ⋅⋅"")
   )
 
