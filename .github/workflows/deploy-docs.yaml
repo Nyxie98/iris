@@ -38,11 +38,11 @@ jobs:
         run: |
           git clone -b dev https://github.com/Marcos-cat/uiua-doc-gen.git
           cd uiua-doc-gen
-          cargo build
-          echo "$(pwd)/target/debug" >> $GITHUB_PATH
+          cargo build --release
+          echo "$(pwd)/target/release" >> $GITHUB_PATH
         
       - name: Generate Documentation
-        run: uiua-doc-gen --name ${{ github.event.repository.name }}
+        run: uiua-doc-gen --name Iris
         
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
