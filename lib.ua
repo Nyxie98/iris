@@ -436,7 +436,7 @@ IsTexture ↚ ≍□"texture"⬚∞⊣
   # Exactly like `Rect`, except that the size is a scalar instead of a vector
   # Optional args: Centered
   # ? Color Size Position
-  ~Square [Centered ← 0] Rect ⊙(⍉↯2 ⍤"Square only takes real numbers, you might intend to use Rect"≠3⊸type) Centered:Centered
+  ~Square [Centered ← 0] Rect!setCentered Centered ⊙(⍉↯2 ⍤"Square only takes real numbers, you might intend to use Rect"≠3⊸type)
 
   PointOrder ↚ <0/+×⊓+-∩⊸↻₁°⊟≡⊟₃
 
