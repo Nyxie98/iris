@@ -258,14 +258,14 @@ FormatName  ↚ ⍥$"_ with alpha"≥2⟜(⨬("grayscale"|"color")◿₂)
 
   # Attempt to get a value from a tunnel
   #
-  # If `Get` is called and no value was sent, and no fill was supplied, it will error.
-  # If the optional argument `Block` is `1`, `Get` will block the program until a value is sent.
+  # If `TryGet` is called and no value was sent, and no fill was supplied, it will error.
+  # If the optional argument `Block` is `1`, `TryGet` will block the program until a value is sent.
   # Value ? Tunnel
   # Track caller!
-  ~Get {Block ← 0} ⨬(⍣(tryrecv|°◌|˜⍤0"No value has been sent yet")|recv) ⊓(Block|Tunnel~TcpThread IsTunnel!"Get")
+  ~TryGet {Block ← 0} ⨬(⍣(tryrecv|°◌|˜⍤0"No value has been sent yet")|recv) ⊓(Block|Tunnel~TcpThread IsTunnel!"Get")
 
   # Call a function when a value is sent through a tunnel
-  Get! ← ⍣(⍩^Get)◌ IsTunnel!"Get!"
+  Get! ← ⍣(⍩^TryGet)◌ IsTunnel!"Get!"
 └─╴
 
 ┌─╴Sound
@@ -436,7 +436,7 @@ IsTexture ↚ ≍□"texture"⬚∞⊣
   # Exactly like `Rect`, except that the size is a scalar instead of a vector
   # Optional args: Centered
   # ? Color Size Position
-  ~Square [Centered ← 0] Rect!setCentered Centered ⊙(⍉↯2 ⍤"Square only takes real numbers, you might intend to use Rect"≠3⊸type)
+  ~Square [Centered ← 0] Rect!°⊸Centered Centered ⊙(⍉↯2 ⍤"Square only takes real numbers, you might intend to use Rect"≠3⊸type)
 
   PointOrder ↚ <0/+×⊓+-∩⊸↻₁°⊟≡⊟₃
 
